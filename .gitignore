@@ -1,0 +1,6 @@
+node_modules/
+config.env
+*.env
+out.txt
+tree.txt
+__pycache__/
