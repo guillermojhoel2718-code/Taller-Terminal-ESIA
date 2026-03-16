@@ -5,10 +5,10 @@
 
 ## Municipios de estudio
 (90,000–120,000 hab, zona norte CDMX)
-- [ ] Municipio 1: [pendiente]
-- [ ] Municipio 2: [pendiente]
-- [ ] Municipio 3: [pendiente]
-- [ ] Municipio 4: [pendiente]
+- [x] Municipio 1: Tepotzotlán (103,696 hab)
+- [x] Municipio 2: Tizayuca (168,302 hab)
+- [x] Municipio 3: Cuautitlán (178,847 hab)
+- [x] Municipio 4: Ixmiquilpan (98,654 hab)
 - [ ] Municipio 5: [pendiente]
 
 ## Proyecto
