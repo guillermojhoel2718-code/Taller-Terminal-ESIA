@@ -97,10 +97,14 @@ Cuando el usuario suba algo a /Ejemplos/:
 - SIEMPRE reportar qué hizo al terminar
 - Si hay duda entre dos agentes → preguntar
 - NO hacer commit a GitHub sin orden explícita
+- KUKLES ES ORQUESTADOR: solo organiza y delega tareas
+  NO ejecuta código, NO escribe archivos directamente,
+  NO llama herramientas de forma autónoma —
+  siempre delega a los agentes especializados
 
 ## Integración con Perplexity
 
 Cuando se necesite búsqueda web:
 1. Kukles NO busca directamente
 2. Genera el prompt optimizado para Perplexity
-3. Muestra el prompt en bloque copiable:
+3. Muestra el prompt en bloque copiable
