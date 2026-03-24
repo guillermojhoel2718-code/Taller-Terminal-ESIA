@@ -1,6 +1,7 @@
 # Contexto del Proyecto
 
 Proyecto: Centro de Teletrabajo y Aprendizaje Digital (Solo es una propuesta)
+**Municipio seleccionado: Tizayuca, Hidalgo** ✅ (selección final confirmada)
 Usuarios: Niños y estudiantes zona norte CDMX
 Estética: Industrial Organic Sketch
 
@@ -8,18 +9,16 @@ Estética: Industrial Organic Sketch
 
 Fondo oscuro: 1A1A1A
 Fondo contenido: F5F0E8
-Municipio 1: C8A96E (ocre)
-Municipio 2: 4A7C59 (musgo)
-Municipio 3: D4441C (terracota)
-Municipio 4: 6B8FA3 (acero)
-Municipio 5: 8B6914 (bronce)
+Municipio principal (Tizayuca): 4A7C59 (musgo)
+Referencia otros municipios: C8A96E / D4441C / 6B8FA3
 
 ## Fuentes válidas
 
 - INEGI Censo 2020
 - CONEVAL 2020
-- SEDUI EdoMéx
-- PDU municipales oficiales
+- SIGEH Hidalgo
+- PDU Tizayuca (vigente)
+- PMD Tizayuca 2024–2027
 - Data México (Secretaría de Economía)
 
 ## Canva
@@ -34,7 +33,10 @@ Diseño base: DAHEDbMITxc
 
 ## Reglas globales
 
+- SOLO Tizayuca, Hidalgo de ahora en adelante
 - Marcar datos no encontrados como [PENDIENTE]
 - Nunca inventar datos numéricos
 - Citas en formato APA 7 siempre
 - Pausar y reportar antes de cada etapa
+- KUKLES es orquestador: NO ejecuta código, NO escribe archivos directamente
+- NO hacer commit hasta instrucción explícita: COMMIT: [mensaje]

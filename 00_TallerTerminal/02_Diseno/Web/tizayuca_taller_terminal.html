@@ -1,0 +1,651 @@
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Georgia', serif; background: #f5f0eb; color: #1a1a2e; }
+.cover { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 40px; position: relative; }
+.cover::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #e94560, #f5a623, #2ecc71, #3498db); }
+.cover h1 { font-size: 2.4em; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; line-height: 1.2; }
+.cover h2 { font-size: 1.3em; font-weight: 300; letter-spacing: 4px; color: #a8c8e8; margin-bottom: 40px; }
+.badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 30px; padding: 8px 24px; font-size: 0.85em; letter-spacing: 2px; margin: 8px; display: inline-block; }
+.cover-meta { margin-top: 60px; font-size: 0.9em; color: #a8c8e8; }
+.nav { background: #1a1a2e; position: sticky; top: 0; z-index: 100; padding: 0; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+.nav ul { display: flex; flex-wrap: wrap; list-style: none; padding: 0 20px; }
+.nav ul li a { display: block; padding: 14px 16px; color: #a8c8e8; text-decoration: none; font-size: 0.78em; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; font-family: Arial, sans-serif; }
+.nav ul li a:hover { color: #f5a623; border-bottom: 3px solid #f5a623; }
+section { max-width: 960px; margin: 0 auto; padding: 60px 40px; }
+.section-label { font-size: 0.75em; letter-spacing: 4px; text-transform: uppercase; color: #e94560; font-family: Arial, sans-serif; font-weight: 700; margin-bottom: 12px; }
+h2.section-title { font-size: 2em; color: #0f3460; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 3px solid #e94560; }
+h3 { font-size: 1.3em; color: #0f3460; margin: 30px 0 12px; }
+p { line-height: 1.9; margin-bottom: 18px; font-size: 1.02em; }
+.highlight-box { background: linear-gradient(135deg, #0f3460, #16213e); color: white; border-radius: 12px; padding: 30px 35px; margin: 30px 0; }
+.highlight-box h3 { color: #f5a623; margin-top: 0; }
+.highlight-box p { color: #d0e8f2; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
+.stat-card { background: white; border-radius: 12px; padding: 25px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-top: 4px solid #e94560; }
+.stat-card .number { font-size: 2.5em; font-weight: 900; color: #0f3460; line-height: 1; margin-bottom: 8px; }
+.stat-card .label { font-size: 0.82em; color: #666; font-family: Arial, sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+.stat-card.green { border-top-color: #2ecc71; } .stat-card.orange { border-top-color: #f5a623; } .stat-card.blue { border-top-color: #3498db; }
+.info-box { background: #fff; border-left: 5px solid #3498db; border-radius: 0 12px 12px 0; padding: 25px 30px; margin: 25px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+.info-box.warning { border-left-color: #f5a623; }
+.info-box.danger { border-left-color: #e94560; }
+.info-box.success { border-left-color: #2ecc71; }
+.tag { display: inline-block; background: #e94560; color: white; border-radius: 20px; padding: 4px 14px; font-size: 0.78em; font-family: Arial, sans-serif; margin: 3px; letter-spacing: 1px; }
+.tag.blue { background: #3498db; } .tag.green { background: #2ecc71; color: #fff; } .tag.orange { background: #f5a623; }
+table { width: 100%; border-collapse: collapse; margin: 25px 0; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+table th { background: #0f3460; color: white; padding: 14px 18px; text-align: left; font-family: Arial, sans-serif; font-size: 0.88em; letter-spacing: 1px; }
+table td { padding: 13px 18px; border-bottom: 1px solid #eef0f5; font-size: 0.95em; }
+table tr:nth-child(even) td { background: #f8faff; }
+.chapter-divider { background: linear-gradient(90deg, #e94560, #f5a623); height: 4px; margin: 0; }
+.chapter-header { background: #0f3460; color: white; padding: 40px; margin: 0; }
+.chapter-header h2 { font-size: 1.6em; margin: 0; }
+.chapter-header p { color: #a8c8e8; margin: 10px 0 0; font-size: 1em; }
+.quote-block { background: #fff8f0; border-radius: 12px; padding: 30px 35px; margin: 30px 0; border: 1px solid #f5a623; position: relative; }
+.quote-block::before { content: '\201C'; font-size: 5em; color: #f5a623; position: absolute; top: -10px; left: 20px; line-height: 1; }
+.quote-block p { padding-left: 30px; font-style: italic; font-size: 1.05em; color: #333; }
+.quote-block cite { display: block; padding-left: 30px; margin-top: 12px; font-size: 0.85em; color: #999; font-style: normal; font-family: Arial, sans-serif; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 25px 0; }
+@media(max-width:600px){ .two-col { grid-template-columns: 1fr; } h2.section-title { font-size: 1.5em; } section { padding: 40px 20px; } }
+.footer { background: #1a1a2e; color: #a8c8e8; padding: 40px; text-align: center; font-size: 0.85em; }
+.progress-bar { background: #eee; border-radius: 20px; overflow: hidden; height: 12px; margin: 8px 0 20px; }
+.progress-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, #e94560, #f5a623); }
+.toc { background: white; border-radius: 12px; padding: 30px 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 30px 0; }
+.toc h3 { color: #0f3460; border-bottom: 2px solid #e94560; padding-bottom: 12px; margin-bottom: 18px; }
+.toc ol { padding-left: 22px; }
+.toc ol li { padding: 7px 0; font-size: 0.97em; }
+.toc ol li a { color: #0f3460; text-decoration: none; border-bottom: 1px dotted #ccc; }
+.toc ol li a:hover { color: #e94560; }
+.criteria-list { list-style: none; }
+.criteria-list li { padding: 12px 16px; margin: 8px 0; background: white; border-radius: 8px; display: flex; align-items: flex-start; gap: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.criteria-list li .icon { font-size: 1.4em; flex-shrink: 0; margin-top: 2px; }
+.semaforo { display: flex; gap: 15px; align-items: center; padding: 15px 20px; background: white; border-radius: 10px; margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.dot { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; }
+.dot.green { background: #2ecc71; } .dot.yellow { background: #f5a623; } .dot.red { background: #e94560; }
+</style>
+
+<nav class='nav'><ul>
+<li><a href='#contexto'>Contexto</a></li>
+<li><a href='#diagnostico'>Diagn&oacute;stico</a></li>
+<li><a href='#justificacion'>Justificaci&oacute;n</a></li>
+<li><a href='#salud'>Salud</a></li>
+<li><a href='#educacion'>Educaci&oacute;n</a></li>
+<li><a href='#metodologia'>Metodolog&iacute;a</a></li>
+<li><a href='#proyectos'>Proyectos</a></li>
+<li><a href='#taller'>Taller Terminal</a></li>
+<li><a href='#viabilidad'>Viabilidad</a></li>
+</ul></nav>
+
+<div class='cover'>
+<div class='section-label'>Documento T&eacute;cnico de An&aacute;lisis Urbano &mdash; Marzo 2026</div>
+<h1>Tizayuca, Hidalgo<br>El Territorio de la Oportunidad</h1>
+<h2>Justificaci&oacute;n Estrat&eacute;gica para Proyectos de Salud y Educaci&oacute;n</h2>
+<div>
+<span class='badge'>PMDU 2022</span>
+<span class='badge'>PMD 2024&ndash;2027</span>
+<span class='badge'>SEDATU</span>
+<span class='badge'>AIFA</span>
+<span class='badge'>Agenda 2030</span>
+</div>
+<div class='cover-meta'>
+<p>Elaborado como apoyo para Taller Terminal de Arquitectura</p>
+<p>Fuentes: Gobierno Municipal de Tizayuca &bull; SIGEH Hidalgo &bull; SEDATU &bull; INEGI &bull; El Universal Hidalgo &bull; An&aacute;lisis NotebookLM</p>
+</div>
+</div>
+<div class='chapter-divider'></div>
+
+<section id='contexto'>
+<div class='section-label'>Cap&iacute;tulo 1</div>
+<h2 class='section-title'>Contexto: La Ciudad que Tuvo que Crecer en Meses</h2>
+
+<div class='toc'>
+<h3>Tabla de Contenido</h3>
+<ol>
+<li><a href='#contexto'>Contexto: La Ciudad que Tuvo que Crecer en Meses</a></li>
+<li><a href='#diagnostico'>Diagn&oacute;stico Territorial y Demogr&aacute;fico</a></li>
+<li><a href='#justificacion'>Justificaci&oacute;n Estrat&eacute;gica: Por qu&eacute; Tizayuca</a></li>
+<li><a href='#salud'>Sector Salud: D&eacute;ficit, Demanda y Proyectos</a></li>
+<li><a href='#educacion'>Sector Educaci&oacute;n: Urgencia Demogr&aacute;fica y Nueva Vocaci&oacute;n</a></li>
+<li><a href='#metodologia'>Metodolog&iacute;a: SIG, Delphi y Semaforizaci&oacute;n</a></li>
+<li><a href='#proyectos'>Portafolio de Proyectos 2027&ndash;2030</a></li>
+<li><a href='#taller'>Gu&iacute;a para el Taller Terminal de Arquitectura</a></li>
+<li><a href='#viabilidad'>Viabilidad, Riesgos y Reflexi&oacute;n Final</a></li>
+</ol>
+</div>
+
+<p>Imaginemos el siguiente escenario: a una ciudad tranquila, hist&oacute;ricamente dedicada a la vivienda social y la manufactura modesta, se le inyectan de golpe casi 53 millones de pesos en infraestructura, y encima se le lanza un ultimato urbano: o se convierte en el cerebro log&iacute;stico y aeroespacial de un nuevo aeropuerto internacional en cuesti&oacute;n de meses, o colapsa bajo su propio peso. Eso es exactamente lo que le ocurri&oacute; a Tizayuca, Hidalgo.</p>
+
+<div class='highlight-box'>
+<h3>El Punto de Inflexi&oacute;n Hist&oacute;rico</h3>
+<p>La construcci&oacute;n del Aeropuerto Internacional Felipe &Aacute;ngeles (AIFA) reescribi&oacute; por completo el destino de Tizayuca. De ser una <em>ciudad dormitorio</em> perif&eacute;rica &mdash;donde la gente solo llegaba a dormir, pero trabajaba, estudiaba y se atend&iacute;a m&eacute;dicamente en otro lado&mdash; se convirti&oacute; de la noche a la ma&ntilde;ana en el <strong>epicentro tecnol&oacute;gico y log&iacute;stico del Valle de M&eacute;xico</strong>. El municipio qued&oacute; ubicado dentro del radio de influencia directa de 10 km del AIFA, siendo catalogado oficialmente como <em>subcentro urbano vital</em>.</p>
+</div>
+
+<p>Los documentos analizados &mdash;la Actualizaci&oacute;n del Programa Municipal de Desarrollo Urbano y Ordenamiento Territorial (PMDU/OT 2022), el Plan Municipal de Desarrollo 2024&ndash;2027 (PMD), los informes comparativos de la SEDATU y los programas presupuestarios sectoriales&mdash; no solo describen esta transformaci&oacute;n: advierten que el margen de error es literalmente cero. La ciudad no tiene d&eacute;cadas para planear su crecimiento. Tiene meses.</p>
+
+<div class='quote-block'>
+<p>La inyecci&oacute;n de capital va a una velocidad y la ciudad a otra muy distinta. El diagn&oacute;stico oficial reconoce un d&eacute;ficit hist&oacute;rico tremendo en equipamiento educativo y de salud.</p>
+<cite>&mdash; An&aacute;lisis NotebookLM sobre el PMDU de Tizayuca</cite>
+</div>
+
+<p>Este documento recapitula por qu&eacute; Tizayuca no es simplemente <em>un buen lugar</em> para proponer un proyecto arquitect&oacute;nico de salud o educaci&oacute;n: es el territorio donde la demanda proyectada y el d&eacute;ficit actual crean la condici&oacute;n perfecta para que un proyecto de este tipo marque un antes y un despu&eacute;s en el desarrollo de toda la regi&oacute;n.</p>
+
+<h3>Marco Normativo de Referencia</h3>
+<p>Todo proyecto arquitect&oacute;nico de taller terminal debe anclarse en documentos oficiales vigentes. Para el caso de Tizayuca, los instrumentos m&aacute;s relevantes son:</p>
+<table>
+<tr><th>Instrumento</th><th>A&ntilde;o</th><th>Relevancia para el proyecto</th></tr>
+<tr><td>PMDU y Ordenamiento Territorial de Tizayuca</td><td>2022 (actualiz.)</td><td>Zonificaci&oacute;n, usos de suelo, d&eacute;ficit de equipamiento</td></tr>
+<tr><td>Plan Municipal de Desarrollo 2024&ndash;2027</td><td>2025</td><td>Ejes estrat&eacute;gicos, metas sectoriales de salud y educaci&oacute;n</td></tr>
+<tr><td>Programa Presupuestario de Salud 2024</td><td>2024</td><td>L&iacute;neas de acci&oacute;n, indicadores de cobertura m&eacute;dica</td></tr>
+<tr><td>Indicadores SIGEH &ndash; Gobierno de Hidalgo</td><td>2024</td><td>Estad&iacute;sticas demogr&aacute;ficas y de rezago social</td></tr>
+<tr><td>Informes SEDATU / PTO</td><td>2022&ndash;2024</td><td>Pol&iacute;gonos de atenci&oacute;n prioritaria, metodolog&iacute;a de VBS</td></tr>
+<tr><td>Agenda 2030 Municipal &ndash; ODS 3 y ODS 4</td><td>2020&ndash;vigente</td><td>Compromisos de salud y educaci&oacute;n inclusiva</td></tr>
+</table>
+</section>
+
+<div class='chapter-header' id='diagnostico'><h2>Cap&iacute;tulo 2: Diagn&oacute;stico Territorial y Demogr&aacute;fico</h2><p>La radiograf&iacute;a cuantitativa y cualitativa del municipio</p></div>
+<div class='chapter-divider'></div>
+
+<section>
+<div class='section-label'>Cap&iacute;tulo 2</div>
+<h2 class='section-title'>Diagn&oacute;stico Territorial y Demogr&aacute;fico</h2>
+
+<p>En el urbanismo, no existe una sola radiograf&iacute;a que muestre exactamente d&oacute;nde le duele a una ciudad. Hay que cruzar datos econ&oacute;micos, demogr&aacute;ficos, geogr&aacute;ficos e infraestructurales para obtener una imagen completa. Lo que emerge del an&aacute;lisis multi-fuente de Tizayuca es un municipio que ya no puede operar con las l&oacute;gicas de una ciudad dormitorio: la presi&oacute;n sobre sus servicios de salud y educaci&oacute;n es un hecho num&eacute;ricamente verificable.</p>
+
+<h3>2.1 Perfil Poblacional</h3>
+
+<div class='stat-grid'>
+<div class='stat-card'><div class='number'>168,302</div><div class='label'>Habitantes (INEGI 2020)</div></div>
+<div class='stat-card orange'><div class='number'>11.5%</div><div class='label'>Tasa de Crecimiento Anual</div></div>
+<div class='stat-card blue'><div class='number'>2,191</div><div class='label'>Hab/km&sup2; (densidad)</div></div>
+<div class='stat-card green'><div class='number'>28</div><div class='label'>A&ntilde;os &mdash; Edad Mediana</div></div>
+</div>
+
+<p>La tasa de crecimiento medio anual del <strong>11.5%</strong> convierte a Tizayuca en uno de los municipios de mayor expansi&oacute;n demogr&aacute;fica del pa&iacute;s. Esto no es un dato abstracto: significa que la ciudad est&aacute; <em>mutando a&ntilde;o tras a&ntilde;o</em>, y que toda su infraestructura de servicios queda sistematicamente rezagada. El PMDU registra un incremento poblacional de <strong>72.7% entre 2010 y 2020</strong>, pasando de 97,461 a 168,302 habitantes. Proyectando esa tendencia, el municipio superar&iacute;a los 250,000 habitantes antes de 2030.</p>
+
+<div class='stat-grid'>
+<div class='stat-card'><div class='number'>27.4%</div><div class='label'>Poblaci&oacute;n infantil (0&ndash;14 a&ntilde;os): 46,159 hab.</div></div>
+<div class='stat-card orange'><div class='number'>24.3%</div><div class='label'>Poblaci&oacute;n juvenil (15&ndash;29 a&ntilde;os): 40,865 hab.</div></div>
+<div class='stat-card blue'><div class='number'>82,047</div><div class='label'>Poblaci&oacute;n Econ&oacute;micamente Activa</div></div>
+<div class='stat-card green'><div class='number'>1,800+</div><div class='label'>Unidades Econ&oacute;micas Registradas</div></div>
+</div>
+
+<p>Que el <strong>51.7% de la poblaci&oacute;n tenga menos de 30 a&ntilde;os</strong> tiene implicaciones directas para el proyecto arquitect&oacute;nico: la demanda de equipamiento educativo y de salud preventiva no es proyecci&oacute;n, ya es una presi&oacute;n presente. El PMDU alerta que en los pr&oacute;ximos a&ntilde;os habr&aacute; una fuerte demanda de educaci&oacute;n media y media superior, y que esto debe tomarse en cuenta para toda la planeaci&oacute;n urbana.</p>
+
+<h3>2.2 Indicadores de Rezago y Carencia Social</h3>
+
+<table>
+<tr><th>Indicador</th><th>Dato</th><th>Implicaci&oacute;n</th></tr>
+<tr><td>Poblaci&oacute;n en condici&oacute;n de pobreza</td><td>57,613 personas (34.2%)</td><td>Alta demanda de servicios p&uacute;blicos subsidiados</td></tr>
+<tr><td>Rezago educativo</td><td>10.01%</td><td>Base de demanda para programas de alfabetizaci&oacute;n y nivelar</td></tr>
+<tr><td>Sin acceso a servicios de salud</td><td>35.3% de la poblaci&oacute;n</td><td>D&eacute;ficit cr&iacute;tico de infraestructura m&eacute;dica</td></tr>
+<tr><td>Sin acceso a seguridad social</td><td>60,538 personas</td><td>Justifica unidades m&eacute;dicas municipales ampliadas</td></tr>
+<tr><td>Conectividad a internet en vivienda</td><td>54.2%</td><td>Brecha digital que requiere intervenci&oacute;n educativa</td></tr>
+<tr><td>Asentamientos irregulares (incremento)</td><td>+30% reciente</td><td>Zonas sin equipamiento formal, demanda latente</td></tr>
+</table>
+
+<div class='info-box warning'>
+<h3>La Paradoja del Crecimiento</h3>
+<p>El PMDU describe con claridad la trampa en que se encuentra Tizayuca: el acelerado crecimiento industrial y habitacional <strong>llega mucho m&aacute;s r&aacute;pido que la infraestructura de servicios</strong>. La ciudad recibe inversi&oacute;n para modernizar parques industriales y arterias log&iacute;sticas, pero el equipamiento educativo y de salud sigue siendo el de una ciudad que ten&iacute;a 97,000 habitantes. Resultado: el sistema entero se congela.</p>
+</div>
+
+<h3>2.3 Infraestructura de Salud Existente vs. Demanda Real</h3>
+
+<div class='two-col'>
+<div class='info-box'><h3>Oferta Actual</h3>
+<p>&bull; 9 unidades m&eacute;dicas formales (dato municipal)<br>&bull; 142 m&eacute;dicos registrados<br>&bull; 35 centros de atenci&oacute;n (PMDU, incluye casas de salud)<br>&bull; 64.7% de la poblaci&oacute;n afiliada a servicios de salud<br>&bull; Cobertura real insuficiente seg&uacute;n diagn&oacute;stico oficial</p>
+</div>
+<div class='info-box danger'><h3>D&eacute;ficit Real</h3>
+<p>&bull; 35.3% sin acceso a ning&uacute;n servicio de salud<br>&bull; Infraestructura m&eacute;dica insuficiente ante crecimiento acelerado<br>&bull; D&eacute;ficit de cobertura municipal reconocido en PMDU<br>&bull; Hospital Regional: en gesti&oacute;n activa, sin construcci&oacute;n a&uacute;n<br>&bull; Pol&iacute;ticas y programas &ldquo;insuficientes y limitadas&rdquo; (Prog. Pres. 2024)</p>
+</div>
+</div>
+
+<h3>2.4 Infraestructura Educativa Existente vs. Proyecci&oacute;n</h3>
+<p>El PMDU es expl&iacute;cito: para evitar el colapso de los servicios educativos en los pr&oacute;ximos tres a&ntilde;os, el municipio necesita generar infraestructura para <strong>cinco secundarias, tres preparatorias y al menos una universidad nueva</strong>. Bajo esa &oacute;ptica prospectiva, proponer un centro educativo de alto impacto no es un ejercicio te&oacute;rico de dise&ntilde;o: es una respuesta urgente a una demanda demogr&aacute;fica que est&aacute; a punto de estallar.</p>
+
+<div class='info-box success'>
+<p>El municipio cuenta con un <strong>PMDU actualizado (2022)</strong>, en vigor, con zonificaci&oacute;n definida y pol&iacute;gonos de atenci&oacute;n prioritaria identificados. A diferencia de Tepozotl&aacute;n (PMDU pendiente) o Ixmiquilpan (predominantemente rural), Tizayuca ofrece <strong>certeza jur&iacute;dica y t&eacute;cnica</strong> para ubicar un proyecto de gran escala.</p>
+</div>
+</section>
+
+<div class='chapter-header' id='justificacion'><h2>Cap&iacute;tulo 3: Justificaci&oacute;n Estrat&eacute;gica &mdash; Por qu&eacute; Tizayuca</h2><p>El punto exacto del espectro de oportunidad: ni saturado ni inviable</p></div>
+<div class='chapter-divider'></div>
+
+<section>
+<div class='section-label'>Cap&iacute;tulo 3</div>
+<h2 class='section-title'>Por qu&eacute; Tizayuca: La Opci&oacute;n &Oacute;ptima del Espectro</h2>
+
+<p>En planificaci&oacute;n territorial, cuando se eval&uacute;an territorios candidatos para un proyecto de equipamiento p&uacute;blico, la decisi&oacute;n &oacute;ptima no es siempre la de mayor viabilidad t&eacute;cnica ni la de mayor carencia social: es la que maximiza el <strong>impacto transformador neto</strong>. El an&aacute;lisis comparativo de cuatro municipios del corredor AIFA &mdash;Cuautitl&aacute;n, Tizayuca, Tepozotl&aacute;n e Ixmiquilpan&mdash; arroja un resultado contundente.</p>
+
+<div class='highlight-box'>
+<h3>El Principio de Ricitos de Oro Urbano</h3>
+<p>Cuautitl&aacute;n: 72.8% de conectividad, tejido urbano saturado, densidad de 4,377 hab/km&sup2;. Insertar ah&iacute; un nuevo equipamiento es redundante, impacto transformador casi nulo.<br><br>
+Ixmiquilpan: 33.1% de conectividad, +50% en pobreza, 55% de su superficie es agr&iacute;cola. El proyecto fragmentado no es viable como intervenci&oacute;n centralizada de gran escala.<br><br>
+Tepozotl&aacute;n: PMDU pendiente de actualizaci&oacute;n. Sin marco normativo vigente, cualquier proyecto camina sobre terreno inestable.<br><br>
+<strong>Tizayuca: el punto geogrfico donde la demanda proyectada y el d&eacute;ficit actual crean el escenario perfecto.</strong></p>
+</div>
+
+<table>
+<tr><th>Municipio</th><th>Conectividad</th><th>PMDU</th><th>Crecimiento</th><th>Impacto potencial</th><th>Veredicto</th></tr>
+<tr><td>Cuautitl&aacute;n</td><td>72.8%</td><td>Vigente</td><td>Estabilizado</td><td>Bajo (saturaci&oacute;n)</td><td>Descartado</td></tr>
+<tr><td>Tepozotl&aacute;n</td><td>~48%</td><td>Pendiente</td><td>Disperso</td><td>Incierto (riesgo legal)</td><td>Descartado</td></tr>
+<tr><td>Ixmiquilpan</td><td>33.1%</td><td>Vigente</td><td>Rural/est&aacute;tico</td><td>Alto pero inviable</td><td>Modelo alternativo</td></tr>
+<tr><td><strong>Tizayuca</strong></td><td><strong>54.2%</strong></td><td><strong>Actualizado 2022</strong></td><td><strong>11.5% anual</strong></td><td><strong>M&aacute;ximo catalizador</strong></td><td><strong>ELEGIDO</strong></td></tr>
+</table>
+
+<h3>3.1 El Efecto AIFA: Inversi&oacute;n que Presiona los Servicios Sociales</h3>
+
+<div class='stat-grid'>
+<div class='stat-card'><div class='number'>157,000 M</div><div class='label'>Millones de pesos de inversi&oacute;n proyectada en el corredor</div></div>
+<div class='stat-card orange'><div class='number'>117,000</div><div class='label'>Empleos directos e indirectos proyectados</div></div>
+<div class='stat-card blue'><div class='number'>52.8 M</div><div class='label'>Pesos inyectados solo en 2024 para parques industriales</div></div>
+<div class='stat-card green'><div class='number'>10 km</div><div class='label'>Radio de influencia directa del AIFA sobre Tizayuca</div></div>
+</div>
+
+<p>La llegada de inversi&oacute;n industrial de esa magnitud tiene un efecto directo en la demanda de servicios sociales: los trabajadores y sus familias que se instalen en Tizayuca necesitar&aacute;n hospitales, escuelas, guarder&iacute;as y centros de formaci&oacute;n t&eacute;cnica. La SEDATU subraya que la inercia gravitacional del AIFA obliga a Tizayuca a hacer una transici&oacute;n dif&iacute;cil: dejar de ser una ciudad dormitorio con f&aacute;bricas para convertirse en un <strong>nodo de actividad metropolitana</strong>, donde la vida entera &mdash;trabajo, salud, educaci&oacute;n&mdash; transcurra en el mismo territorio.</p>
+
+<div class='quote-block'>
+<p>Una ciudad dormitorio asume que la gente trabaja, consume y se educa en otro lado. Un nodo metropolitano exige que la vida entera transcurra all&iacute;. Eso requiere, como condici&oacute;n m&iacute;nima, equipamiento de salud y educaci&oacute;n de escala regional.</p>
+<cite>&mdash; An&aacute;lisis SEDATU sobre el corredor AIFA&ndash;Tizayuca</cite>
+</div>
+
+<h3>3.2 Gesti&oacute;n de Recursos: La Administraci&oacute;n que Planea con Evidencia</h3>
+<p>Un argumento frecuentemente subestimado al elegir un sitio para un proyecto es la capacidad institucional del gobierno local para gestionar, concretar y sostener la inversi&oacute;n. Tizayuca presenta en 2024&ndash;2027 un perfil institucional destacado:</p>
+
+<ul class='criteria-list'>
+<li><span class='icon'>&#128203;</span><div><strong>PMDU actualizado y publicado en 2022</strong> &mdash; Con polic&eacute;ntrica urbana, pol&iacute;gonos de atenci&oacute;n prioritaria y normatividad de zonificaci&oacute;n clara.</div></li>
+<li><span class='icon'>&#127963;</span><div><strong>Instituto Municipal de Planeaci&oacute;n (IMDUyV)</strong> &mdash; Creado para blindar las decisiones t&eacute;cnicas de los cambios de administraci&oacute;n cada 3 a&ntilde;os.</div></li>
+<li><span class='icon'>&#128200;</span><div><strong>Sistema de semaforizaci&oacute;n de avance</strong> &mdash; Indicadores emp&iacute;ricos anuales para evaluar si los proyectos avanzan o se estancan, tomados de la gu&iacute;a de Ciudades Emergentes y Sostenibles.</div></li>
+<li><span class='icon'>&#127970;</span><div><strong>5 predios donados para proyectos estrat&eacute;gicos</strong> &mdash; En salud, educaci&oacute;n y seguridad, en coordinaci&oacute;n con Estado y Federaci&oacute;n.</div></li>
+<li><span class='icon'>&#128104;&#8205;&#127979;</span><div><strong>Programa Escuela Solidaria y Abierta</strong> &mdash; Presupuesto de 5+ millones de pesos propios para fortalecer el sector educativo en 2025.</div></li>
+<li><span class='icon'>&#127973;</span><div><strong>Gesti&oacute;n activa del Hospital Regional con IMSS</strong> &mdash; Predio aprobado como viable en julio 2025, expediente en integraci&oacute;n.</div></li>
+<li><span class='icon'>&#127760;</span><div><strong>Coordinaci&oacute;n con Agenda 2030</strong> &mdash; ODS 3 (Salud) y ODS 4 (Educaci&oacute;n) integrados en el PMD 2024&ndash;2027.</div></li>
+</ul>
+
+<div class='info-box success'>
+<p>En 2022, Tizayuca present&oacute; su PMDU actualizado ante la SEDATU mediante el Programa Territorial Operativo (PTO), siendo uno de los pocos municipios del corredor que cuenta con un instrumento jur&iacute;dicamente vigente, metodol&oacute;gicamente s&oacute;lido y actualizado al contexto post-AIFA. Esta solidez normativa es la que <strong>hace posible justificar y localizar un proyecto de taller terminal sin riesgo de contradicci&oacute;n jur&iacute;dica</strong>.</p>
+</div>
+</section>
+
+<div class='chapter-header' id='salud'><h2>Cap&iacute;tulo 4: Sector Salud &mdash; D&eacute;ficit, Demanda y Proyectos</h2><p>Hospital Regional, centros de salud y atenci&oacute;n primaria para una ciudad en explosi&oacute;n</p></div>
+<div class='chapter-divider'></div>
+
+<section>
+<div class='section-label'>Cap&iacute;tulo 4</div>
+<h2 class='section-title'>Sector Salud: D&eacute;ficit Estructural y Oportunidad Proyectual</h2>
+
+<p>El Programa Presupuestario de Salud 2024 del municipio de Tizayuca parte de un diagn&oacute;stico sin ambigu&uml;edades: la infraestructura m&eacute;dica existente <em>ya resulta insuficiente para dar atenci&oacute;n a la poblaci&oacute;n debido al crecimiento acelerado</em>. Las pol&iacute;ticas y programas de salud preventiva y de atenci&oacute;n directa &ldquo;han resultado insuficientes y limitadas&rdquo;. El 64.7% de la poblaci&oacute;n est&aacute; afiliada a alg&uacute;n servicio, pero una de cada tres personas &mdash;m&aacute;s de 55,000 habitantes&mdash; no tiene acceso real a atenci&oacute;n m&eacute;dica.</p>
+
+<h3>4.1 El Gran Proyecto: Hospital General de Zona &ndash; IMSS</h3>
+
+<div class='info-box warning'>
+<h3>Estado actual (Marzo 2026)</h3>
+<p>En julio de 2025, el IMSS <strong>aprob&oacute; como viable un predio municipal</strong> propuesto para construir el Hospital General de Zona en Tizayuca. El expediente est&aacute; en integraci&oacute;n: requiere desincorporaci&oacute;n del predio, estudios ambientales y validaci&oacute;n t&eacute;cnica del Consejo T&eacute;cnico del IMSS. La presidenta Claudia Sheinbaum reconoci&oacute; en conferencia que existe un d&eacute;ficit de infraestructura hospitalaria en Tizayuca y su zona metropolitana. <em>No hay a&uacute;n fecha de inicio de obra</em>, lo que convierte el horizonte 2027&ndash;2030 en el periodo probable de construcci&oacute;n y primera operaci&oacute;n.</p>
+</div>
+
+<p>La construcci&oacute;n del Hospital General del IMSS en Tizayuca es, desde la perspectiva del taller terminal, el proyecto ancla m&aacute;s relevante del corredor. Su dimensi&oacute;n tipol&oacute;gica es de <strong>hospital de zona de segundo nivel de atenci&oacute;n</strong>, con consultorios, hospitalizaci&oacute;n, urgencias, quir&oacute;fanos, laboratorio y servicios de apoyo. Para el proyecto de arquitectura, esto implica:</p>
+
+<ul class='criteria-list'>
+<li><span class='icon'>&#128197;</span><div><strong>Programa arquitect&oacute;nico extenso y normado</strong> &mdash; Referencia: Norma NOM-016-SSA3 y IMSS Tipo 1&ndash;3. Programas m&iacute;nimos de 8,000 a 20,000 m&sup2; seg&uacute;n capacidad.</div></li>
+<li><span class='icon'>&#128205;</span><div><strong>Implantaci&oacute;n en predio donado</strong> &mdash; El municipio gestion&oacute; el predio, lo que ofrece un punto de partida real para el dise&ntilde;o.</div></li>
+<li><span class='icon'>&#128101;</span><div><strong>Poblaci&oacute;n objetivo de 60,000+ no derechohabientes</strong> como usuario directo.</div></li>
+<li><span class='icon'>&#9851;&#65039;</span><div><strong>Gesti&oacute;n h&iacute;drica y ambiental</strong> &mdash; El proyecto deber&aacute; integrarse a la estrategia de parque h&iacute;drico y PETAR que dicta el PMDU.</div></li>
+</ul>
+
+<h3>4.2 Proyectos Complementarios de Atenci&oacute;n Primaria 2027&ndash;2030</h3>
+<p>El PMD 2024&ndash;2027 establece l&iacute;neas de acci&oacute;n sectoriales en salud que, por su naturaleza y escala, tendr&aacute;n su fase de consolidaci&oacute;n y expansi&oacute;n en el periodo 2027&ndash;2030:</p>
+
+<table>
+<tr><th>L&iacute;nea de acci&oacute;n</th><th>Tipo de proyecto arquitect&oacute;nico</th><th>Horizonte</th></tr>
+<tr><td>Construir un Hospital Regional en coordinaci&oacute;n con el Estado</td><td>Hospital General de Zona (tipolog&iacute;a 2do nivel)</td><td>2027&ndash;2030</td></tr>
+<tr><td>Acondicionar casas de salud para atenci&oacute;n primaria</td><td>Rehab. y ampliaci&oacute;n de UBS (Unidades B&aacute;sicas de Salud)</td><td>2024&ndash;2027</td></tr>
+<tr><td>Mantenimiento de Centros de Salud Municipales</td><td>Intervenci&oacute;n en infraestructura existente</td><td>Continuo</td></tr>
+<tr><td>Espacios para salud mental y prevenci&oacute;n</td><td>M&oacute;dulos o centros comunitarios de salud mental</td><td>2026&ndash;2029</td></tr>
+<tr><td>Atenci&oacute;n a poblaci&oacute;n no derechohabiente</td><td>Consultorios municipales adicionales</td><td>2025&ndash;2028</td></tr>
+<tr><td>Campaas de salud preventiva (Guardianes por tu salud)</td><td>Infraestructura de soporte para jornadas</td><td>Continuo</td></tr>
+</table>
+
+<h3>4.3 La Pertinencia del Proyecto Arquitect&oacute;nico de Salud en Tizayuca</h3>
+
+<div class='two-col'>
+<div class='info-box'>
+<h3>Argumento Cuantitativo</h3>
+<p>Aplicando la metodolog&iacute;a SEDATU de Unidades B&aacute;sicas de Servicio (VBS), el m&eacute;todo es claro: tomar la poblaci&oacute;n sin cobertura (35.3% de 168,302 = 59,411 personas), dividir entre la capacidad m&eacute;dica est&aacute;ndar por unidad, y el d&eacute;ficit resultante <strong>justifica entre 3 y 5 nuevas instalaciones de atenci&oacute;n m&eacute;dica de distintos niveles</strong>.</p>
+</div>
+<div class='info-box'>
+<h3>Argumento Cualitativo</h3>
+<p>El m&eacute;todo Delphi aplicado en los talleres del PMDU identific&oacute; como demanda ciudadana central que los hijos no tengan que viajar 2 horas para atenderse. La ciudadan&iacute;a no pide &ldquo;un hospital de alta especialidad&rdquo;; pide <em>que el servicio exista donde viven</em>. El proyecto arquitect&oacute;nico es la respuesta f&iacute;sica a esa demanda.</p>
+</div>
+</div>
+
+<div class='highlight-box'>
+<h3>Tipolog&iacute;as de Proyecto Viable para Taller Terminal &mdash; Sector Salud</h3>
+<p>
+<strong>Opci&oacute;n A:</strong> Centro de Salud con Servicios Ampliados (CESSA) &mdash; 1,500&ndash;4,000 m&sup2;, atenci&oacute;n primaria y especialidades b&aacute;sicas, urgencias menores, farmacia.<br><br>
+<strong>Opci&oacute;n B:</strong> Hospital General de Zona (propuesta conceptual complementaria al IMSS) &mdash; 8,000&ndash;15,000 m&sup2;, segundo nivel de atenci&oacute;n, hospitalizaci&oacute;n, cirug&iacute;a, ginecolog&iacute;a.<br><br>
+<strong>Opci&oacute;n C:</strong> Centro de Salud Mental y Comunitario &mdash; 800&ndash;2,000 m&sup2;, consulta psicol&oacute;gica, talleres, prevenci&oacute;n de adicciones, atenci&oacute;n a grupos vulnerables.<br><br>
+<strong>Opci&oacute;n D:</strong> Cl&uacute;ster de Salud Integral (Mixto) &mdash; Combina atenci&oacute;n primaria + salud mental + m&oacute;dulo materno-infantil + espacio comunitario, 3,000&ndash;6,000 m&sup2;.
+</p>
+</div>
+</section>
+
+<div class='chapter-header' id='educacion'><h2>Cap&iacute;tulo 5: Sector Educaci&oacute;n &mdash; Urgencia Demogr&aacute;fica y Nueva Vocaci&oacute;n</h2><p>De la escuela tradicional al Centro de Educaci&oacute;n Digital para la Industria 4.0</p></div>
+<div class='chapter-divider'></div>
+
+<section>
+<div class='section-label'>Cap&iacute;tulo 5</div>
+<h2 class='section-title'>Sector Educaci&oacute;n: Demanda Explosiva y Nueva Vocaci&oacute;n Econ&oacute;mica</h2>
+
+<p>La poblaci&oacute;n de Tizayuca tiene una mediana de edad de 28 a&ntilde;os y el 51.7% tiene menos de 30. Esto no es solo un dato: es una <em>presi&oacute;n estructural</em> sobre el sistema educativo que crece m&aacute;s r&aacute;pido que la infraestructura disponible. Al mismo tiempo, la llegada del corredor AIFA transforma el tipo de formaci&oacute;n que el territorio necesita: ya no basta con construir aulas gen&eacute;ricas.</p>
+
+<h3>5.1 D&eacute;ficit Proyectado: Los N&uacute;meros que No Mienten</h3>
+
+<p>El PMDU de Tizayuca, utilizando la metodolog&iacute;a de Pol&iacute;gonos de Atenci&oacute;n Prioritaria (PAP) y la f&oacute;rmula de <em>poblaci&oacute;n por atender vs. Unidades B&aacute;sicas de Servicio</em> vigentes, proyecta que solo para <strong>evitar el colapso de sus servicios educativos en los pr&oacute;ximos 3 a&ntilde;os</strong>, el municipio necesita:</p>
+
+<div class='stat-grid'>
+<div class='stat-card'><div class='number'>5</div><div class='label'>Nuevas secundarias requeridas</div></div>
+<div class='stat-card orange'><div class='number'>3</div><div class='label'>Preparatorias nuevas necesarias</div></div>
+<div class='stat-card blue'><div class='number'>1+</div><div class='label'>Universidad o centro de educaci&oacute;n superior</div></div>
+<div class='stat-card green'><div class='number'>750 m</div><div class='label'>Radio m&aacute;ximo de servicio educativo (norma SEDATU)</div></div>
+</div>
+
+<p>Esta no es una proyecci&oacute;n optimista: es el m&iacute;nimo para sostener la demanda ya presente. Con el crecimiento de 11.5% anual, cada a&ntilde;o que transcurra sin nueva infraestructura educativa <strong>aumenta el rezago de forma exponencial</strong>.</p>
+
+<h3>5.2 La Traducci&oacute;n del Ciudadano al Planificador</h3>
+
+<p>El m&eacute;todo Delphi aplic&oacute; en los talleres del PMDU algo fundamental: no permiti&oacute; que el tecnicismo aplastara la voz ciudadana, pero tampoco dej&oacute; que las asambleas derivaran en listas de deseos. La ciudadan&iacute;a no pidi&oacute; directamente un <em>campus de ciencia de datos</em>, sino que demand&oacute;:</p>
+
+<ul class='criteria-list'>
+<li><span class='icon'>&#127968;</span><div>Que sus hijos no tengan que viajar 2 horas hasta la capital para estudiar.</div></li>
+<li><span class='icon'>&#128188;</span><div>Que los empleos bien pagados que trae el AIFA se queden en la comunidad, no que traigan profesionales de fuera.</div></li>
+<li><span class='icon'>&#127891;</span><div>Que existan opciones de formaci&oacute;n avanzada que permitan competir en el nuevo mercado laboral del corredor aeroespacial.</div></li>
+</ul>
+
+<p>El equipo t&eacute;cnico del PMDU <em>tradujo</em> esas demandas: para cumplirlas, no basta una escuela t&eacute;cnica tradicional de los a&ntilde;os 90. Se requiere un <strong>salto cualitativo hacia la industria 4.0, la ciencia de datos y la econom&iacute;a circular</strong>, porque ese es el lenguaje del mercado que el AIFA est&aacute; generando.</p>
+
+<div class='quote-block'>
+<p>El equipo de planeaci&oacute;n analiza esa demanda ciudadana de buenos empleos locales y luego mira hacia d&oacute;nde va el mercado con la llegada de la industria aeroespacial y farmac&eacute;utica. La conclusi&oacute;n t&eacute;cnica es que para cumplir esa demanda social, se necesita dar un salto cualitativo. Es una traducci&oacute;n de necesidades.</p>
+<cite>&mdash; An&aacute;lisis NotebookLM &ndash; Radiograf&iacute;a urbana para centros de educaci&oacute;n digital</cite>
+</div>
+
+<h3>5.3 Vocaci&oacute;n Econ&oacute;mica del Territorio y Perfil Curricular</h3>
+
+<p>El PMDU identifica que Tizayuca se est&aacute; perfilando como un <strong>coloso industrial</strong> en tres sectores principales, que deben alimentar el dise&ntilde;o curricular de cualquier centro educativo en el territorio:</p>
+
+<table>
+<tr><th>Sector Econ&oacute;mico</th><th>Perfiles demandados</th><th>Contenido educativo clave</th></tr>
+<tr><td>Log&iacute;stica y cadena de suministro (AIFA)</td><td>Operadores, supervisores, analistas de cadena</td><td>Log&iacute;stica, comercio exterior, TIC aplicadas</td></tr>
+<tr><td>Manufactura aeroespacial y automotriz</td><td>T&eacute;cnicos en mec&aacute;nica de precisi&oacute;n, soldadura, CNC</td><td>Industria 4.0, Rob&oacute;tica, Manufactura avanzada</td></tr>
+<tr><td>Industria farmac&eacute;utica</td><td>T&eacute;cnicos en laboratorio, control de calidad</td><td>Qu&iacute;mica, BPM, dise&ntilde;o de procesos</td></tr>
+<tr><td>Econom&iacute;a circular y sustentabilidad</td><td>Gestores ambientales, especialistas en residuos</td><td>Econom&iacute;a circular, gesti&oacute;n ambiental</td></tr>
+<tr><td>Tecnolog&iacute;a e innovaci&oacute;n local</td><td>Desarrolladores, emprendedores digitales</td><td>Ciencia de datos, programaci&oacute;n, dise&ntilde;o UX</td></tr>
+</table>
+
+<div class='info-box warning'>
+<h3>El Riesgo de la F&aacute;brica de Mano de Obra</h3>
+<p>El an&aacute;lisis cr&iacute;tico de los documentos advierte: si el curr&iacute;culo del centro educativo se supedita <em>&uacute;nicamente</em> a las necesidades de la mega industria log&iacute;stica, existe el riesgo de convertirlo en una f&aacute;brica de mano de obra para el corredor industrial, sin fomentar innovaci&oacute;n independiente ni emprendimiento local. El dise&ntilde;o del proyecto arquitect&oacute;nico debe contemplar espacios para <strong>formaci&oacute;n t&eacute;cnica especializada AND alfabetizaci&oacute;n digital de base AND incubaci&oacute;n de proyectos propios</strong>.</p>
+</div>
+
+<h3>5.4 El Proyecto Escuela Solidaria y Abierta y la Infraestructura CAM</h3>
+<p>El PMD 2024&ndash;2027 ya est&aacute; generando precedentes f&iacute;sicos concretos: el <strong>Centro de Atenci&oacute;n M&uacute;ltiple No. 14 (CAM)</strong> recibi&oacute; fondos FAISM para construcci&oacute;n de aula y m&oacute;dulo de sanitarios en 2025, justificado en que la falta de infraestructura limita la capacidad de atenci&oacute;n a ni&ntilde;os con discapacidad. Este patr&oacute;n se reproducir&aacute; en 2027&ndash;2030:</p>
+
+<div class='highlight-box'>
+<h3>Tipolog&iacute;as de Proyecto Viable para Taller Terminal &mdash; Sector Educaci&oacute;n</h3>
+<p>
+<strong>Opci&oacute;n A:</strong> Centro de Educaci&oacute;n Digital y Tecnol&oacute;gica &mdash; 3,000&ndash;8,000 m&sup2;, aulas especializadas en rob&oacute;tica, laboratorios de ciencia de datos, fab lab, zona de incubaci&oacute;n.<br><br>
+<strong>Opci&oacute;n B:</strong> Preparatoria T&eacute;cnica con &Eacute;nfasis en Industria 4.0 &mdash; 4,000&ndash;7,000 m&sup2;, aulas convencionales + talleres de manufactura, log&iacute;stica y automatizaci&oacute;n.<br><br>
+<strong>Opci&oacute;n C:</strong> Centro Comunitario de Aprendizaje y Cohesin Social &mdash; 1,500&ndash;3,000 m&sup2;, capacitaci&oacute;n continua para adultos, espacios seguros para j&oacute;venes, biblioteca digital.<br><br>
+<strong>Opci&oacute;n D:</strong> Campus de Formaci&oacute;n T&eacute;cnica Superior (CONALEP / IT estilo) &mdash; 6,000&ndash;12,000 m&sup2;, aulas, talleres, laboratorios, zona administrativa, cafeter&iacute;a, canchas.
+</p>
+</div>
+</section>
+
+<div class='chapter-header' id='metodologia'><h2>Cap&iacute;tulo 6: Metodolog&iacute;a Urbana &mdash; SIG, Delphi y Semaforizaci&oacute;n</h2><p>Las herramientas que transforman una idea en pol&iacute;tica p&uacute;blica con sentido</p></div>
+<div class='chapter-divider'></div>
+
+<section>
+<div class='section-label'>Cap&iacute;tulo 6</div>
+<h2 class='section-title'>Metodolog&iacute;a: C&oacute;mo el PMDU Justifica Tu Proyecto</h2>
+
+<p>Uno de los errores m&aacute;s frecuentes en los proyectos de taller terminal es que el dise&ntilde;o architectonico no demuestra con evidencia metodol&oacute;gica por qu&eacute; se propone donde se propone y con el programa que tiene. El PMDU de Tizayuca ofrece tres herramientas que, bien aplicadas, convierten tu proyecto en una pieza de pol&iacute;tica p&uacute;blica con sentido y no en un ejercicio especulativo.</p>
+
+<h3>6.1 Sistemas de Informaci&oacute;n Geogr&aacute;fica (SIG)</h3>
+<p>El gran pilar cuantitativo del PMDU. Permite cruzar en capas: censo de poblaci&oacute;n (INEGI), red de agua, infraestructura el&eacute;ctrica, equipamiento existente, zonificaci&oacute;n de uso de suelo y zonas de riesgo. El cruce de capas revela autom&aacute;ticamente las <strong>zonas de estr&eacute;s urbano</strong>: lugares donde la poblaci&oacute;n es alta, los servicios escasos y la accesibilidad limitada. Estas son las zonas donde tu proyecto tiene mayor justificaci&oacute;n de implantaci&oacute;n.</p>
+
+<div class='info-box'>
+<p><strong>Para el taller terminal:</strong> Usa la cartograf&iacute;a del PMDU/OT de Tizayuca (disponible en imduyv.gob.mx) para identificar en qu&eacute; pol&iacute;gono de atenci&oacute;n prioritaria se ubica tu predio propuesto. Cita el mapa de equipamiento urbano y el de zonificaci&oacute;n para justificar el uso de suelo compatible con tu programa.</p>
+</div>
+
+<h3>6.2 M&eacute;todo Delphi: La Participaci&oacute;n Ciudadana Estructurada</h3>
+<p>A diferencia de una asamblea abierta donde grita m&aacute;s fuerte el que tiene m&aacute;s presencia, el m&eacute;todo Delphi utiliza <strong>rondas iterativas y an&oacute;nimas</strong> con actores clave. Cada participante responde un cuestionario, el equipo sintetiza las respuestas y devuelve un nuevo cuestionario, hasta alcanzar un consenso depurado. Este proceso:</p>
+
+<ul class='criteria-list'>
+<li><span class='icon'>&#10003;</span><div>Elimina el ruido y la presi&oacute;n de grupo de las asambleas</div></li>
+<li><span class='icon'>&#10003;</span><div>Transforma a las personas de objetos pasivos de an&aacute;lisis a herramientas activas que dan alternativas (PMDU Tizayuca)</div></li>
+<li><span class='icon'>&#10003;</span><div>Ancla los datos estad&iacute;sticos a la realidad palpable de la calle</div></li>
+<li><span class='icon'>&#10003;</span><div>Legitima pol&iacute;ticamente las decisiones t&eacute;cnicas del plan</div></li>
+</ul>
+
+<div class='info-box success'>
+<p><strong>Para el taller terminal:</strong> Menciona que tu programa arquitect&oacute;nico responde a las demandas identificadas mediante el m&eacute;todo Delphi en el PMDU. Esto le da <em>legitimidad social</em> a tu propuesta, m&aacute;s all&aacute; del an&aacute;lisis puramente normativo.</p>
+</div>
+
+<h3>6.3 Pol&iacute;gonos de Atenci&oacute;n Prioritaria (PAP) y Unidades B&aacute;sicas de Servicio (VBS)</h3>
+<p>La SEDATU establece una f&oacute;rmula matem&aacute;tica precisa para justificar la necesidad de equipamiento:</p>
+
+<div class='highlight-box'>
+<h3>F&oacute;rmula de D&eacute;ficit SEDATU</h3>
+<p><strong>D&eacute;ficit = Poblaci&oacute;n por atender &minus; Unidades B&aacute;sicas de Servicio (VBS) existentes</strong><br><br>
+Una VBS puede ser: un aula, una cama de hospital, un m&sup2; de &aacute;rea verde, un consultorio.<br><br>
+Ejemplo aplicado (Cuautitl&aacute;n, m&eacute;todo SEDATU): ni&ntilde;os en edad preescolar en el pol&iacute;gono / capacidad m&aacute;xima de aulas existentes = d&eacute;ficit exacto de <strong>286 aulas de preescolar</strong> con radio m&aacute;ximo de 750 m desde los hogares.<br><br>
+<strong>Este mismo m&eacute;todo aplicado a Tizayuca justifica num&eacute;ricamente cualquier proyecto de salud o educaci&oacute;n.</strong></p>
+</div>
+
+<h3>6.4 Sistema de Semaforizaci&oacute;n: El Documento que Mide Avances</h3>
+
+<p>El PMDU de Tizayuca incorpora el sistema de semaforizaci&oacute;n tomado de la <em>Gu&iacute;a de Ciudades Emergentes y Sostenibles</em>. Cada meta tiene un indicador emp&iacute;rico anual con tres estados:</p>
+
+<div class='semaforo'><div class='dot green'></div><strong>VERDE:</strong>&nbsp; El proyecto avanza en tiempo y forma, seg&uacute;n los indicadores definidos.</div>
+<div class='semaforo'><div class='dot yellow'></div><strong>AMARILLO:</strong>&nbsp; Avance parcial o con retrasos menores, requiere ajuste de estrategia.</div>
+<div class='semaforo'><div class='dot red'></div><strong>ROJO:</strong>&nbsp; El proyecto est&aacute; bloqueado. La administraci&oacute;n debe dar la cara y explicar el rezago.</div>
+
+<p style='margin-top:20px'>Este mecanismo de rendici&oacute;n de cuentas es lo que impide que el plan quede acumulando polvo en un despacho. Un plan de desarrollo a 20 a&ntilde;os pierde todo su sentido si no mides anualmente qu&eacute; est&aacute; pasando.</p>
+
+<div class='info-box'>
+<p><strong>Para el taller terminal:</strong> Puedes proponer indicadores propios de evaluaci&oacute;n post-ocupaci&oacute;n para tu proyecto (n&uacute;mero de usuarios atendidos, porcentaje de cobertura del pol&iacute;gono, satisfacci&oacute;n de usuarios), vinculados al sistema de semaforizaci&oacute;n del PMDU. Esto eleva la calidad metodol&oacute;gica de tu presentaci&oacute;n.</p>
+</div>
+</section>
+
+<div class='chapter-header' id='proyectos'><h2>Cap&iacute;tulo 7: Portafolio de Proyectos 2027&ndash;2030</h2><p>Matriz completa de iniciativas ancladas en documentos oficiales</p></div>
+<div class='chapter-divider'></div>
+
+<section>
+<div class='section-label'>Cap&iacute;tulo 7</div>
+<h2 class='section-title'>Portafolio de Proyectos 2027&ndash;2030: Salud y Educaci&oacute;n</h2>
+
+<p>Los proyectos que se presentan a continuaci&oacute;n <strong>no son especulaci&oacute;n</strong>: cada uno se ancla en al menos un documento oficial vigente del municipio de Tizayuca o del gobierno del estado de Hidalgo. La temporalidad 2027&ndash;2030 corresponde a la fase de <em>consolidaci&oacute;n y escalamiento</em> de lo que el PMD 2024&ndash;2027 pone en marcha.</p>
+
+<h3>7.1 Sector Salud</h3>
+
+<table>
+<tr><th>Proyecto</th><th>Fundamento normativo</th><th>Escala estimada</th><th>Horizonte</th><th>Estado 2026</th></tr>
+<tr><td><strong>Hospital General de Zona &ndash; IMSS</strong></td><td>PMD 2024&ndash;2027; Gestiones con IMSS y Presidencia de la Rep&uacute;blica</td><td>8,000&ndash;20,000 m&sup2; / 2&deg; nivel de atenci&oacute;n</td><td>2027&ndash;2030</td><td>Predio aprobado, expediente en integraci&oacute;n (jul. 2025)</td></tr>
+<tr><td><strong>Ampliaci&oacute;n de Centros de Salud Municipales</strong></td><td>Prog. Presupuestario Salud 2024; PMD eje Bienestar Social</td><td>500&ndash;1,500 m&sup2; por unidad</td><td>Continuo / 2025&ndash;2028</td><td>L&iacute;nea de acci&oacute;n activa</td></tr>
+<tr><td><strong>Acondicionamiento de Casas de Salud</strong></td><td>Prog. Presupuestario Salud 2024</td><td>Intervenci&oacute;n menor en unidades existentes</td><td>2024&ndash;2027</td><td>En ejecuci&oacute;n</td></tr>
+<tr><td><strong>Centro de Salud Mental Comunitario</strong></td><td>PMD: prevenci&oacute;n y salud mental; Agenda 2030 ODS 3</td><td>800&ndash;2,000 m&sup2;</td><td>2026&ndash;2029</td><td>Proyectado sin predio</td></tr>
+<tr><td><strong>Consultorios Municipales para No Derechohabientes</strong></td><td>Prog. Pres. Salud: 60,538 sin seguridad social</td><td>M&oacute;dulos de 200&ndash;600 m&sup2;</td><td>2025&ndash;2028</td><td>Necesidad identificada</td></tr>
+</table>
+
+<h3>7.2 Sector Educaci&oacute;n</h3>
+
+<table>
+<tr><th>Proyecto</th><th>Fundamento normativo</th><th>Escala estimada</th><th>Horizonte</th><th>Estado 2026</th></tr>
+<tr><td><strong>Centro de Educaci&oacute;n Digital / Tecnol&oacute;gico</strong></td><td>PMDU: transici&oacute;n a nodo metropolitano; demanda Delphi de formaci&oacute;n avanzada</td><td>4,000&ndash;10,000 m&sup2;</td><td>2027&ndash;2030</td><td>Identificado, sin predio formal</td></tr>
+<tr><td><strong>3 Nuevas Preparatorias</strong></td><td>PMDU: proyecci&oacute;n de d&eacute;ficit educativo; pir&aacute;mide de edad</td><td>3,000&ndash;6,000 m&sup2; c/u</td><td>2026&ndash;2030</td><td>Necesidad cuantificada</td></tr>
+<tr><td><strong>5 Nuevas Secundarias</strong></td><td>PMDU: metodolog&iacute;a PAP&ndash;VBS</td><td>2,000&ndash;4,000 m&sup2; c/u</td><td>2025&ndash;2030</td><td>Necesidad cuantificada</td></tr>
+<tr><td><strong>Campus Universitario / IES</strong></td><td>PMD: 5 predios donados; demanda ciudadana Delphi</td><td>8,000&ndash;15,000 m&sup2;</td><td>2027&ndash;2032</td><td>En gesti&oacute;n con Estado/Fed.</td></tr>
+<tr><td><strong>Ampliaci&oacute;n CAM y Educaci&oacute;n Especial</strong></td><td>FAISM 2025: CAM No. 14; Prog. Educ. Municipal</td><td>Intervenci&oacute;n en planteles existentes</td><td>Continuo</td><td>En ejecuci&oacute;n</td></tr>
+<tr><td><strong>Escuelas con Ecotecnias</strong></td><td>PMDU: sustentabilidad y Agenda 2030 ODS 4</td><td>Complemento a proyectos nuevos</td><td>2026&ndash;2030</td><td>L&iacute;nea de acci&oacute;n definida</td></tr>
+</table>
+
+<h3>7.3 Proyectos de Infraestructura Complementaria</h3>
+<p>Ning&uacute;n proyecto de salud o educaci&oacute;n funciona sin la infraestructura de soporte. El PMDU identifica dos proyectos de escala territorial que son <em>precondici&oacute;n</em> para el desarrollo sostenible:</p>
+
+<div class='two-col'>
+<div class='info-box'>
+<h3>Parque H&iacute;drico Urbano</h3>
+<p>Esponja urbana para captar el exceso de agua que genera la nueva densificaci&oacute;n (hormig&oacute;n + impermeabilizaci&oacute;n). La transici&oacute;n a zonas de alta densidad sin esta infraestructura genera inundaciones catastrof&iacute;cas. El proyecto de salud o educaci&oacute;n debe <strong>integrarse o articularse con el parque h&iacute;drico</strong> en la estrategia de implantaci&oacute;n.</p>
+</div>
+<div class='info-box'>
+<h3>Planta de Tratamiento de Aguas (PETAR)</h3>
+<p>Meta: disminuir al menos 30% la contaminaci&oacute;n del agua en el municipio. Es la condici&oacute;n ambiental m&iacute;nima para desarrollar industria farmac&eacute;utica y aeroespacial de alta calidad. Un hospital o centro educativo no puede operar adecuadamente si el agua subterr&aacute;nea est&aacute; contaminada.</p>
+</div>
+</div>
+</section>
+
+<div class='chapter-header' id='taller'><h2>Cap&iacute;tulo 8: Gu&iacute;a para el Taller Terminal de Arquitectura</h2><p>Los puntos que debe cubrir tu proyecto para ser s&oacute;lido, pertinente y justificable</p></div>
+<div class='chapter-divider'></div>
+
+<section>
+<div class='section-label'>Cap&iacute;tulo 8</div>
+<h2 class='section-title'>Gu&iacute;a para el Taller Terminal: 10 Puntos Clave</h2>
+
+<p>Un taller terminal de arquitectura no eval&uacute;a solo la calidad est&eacute;tica del proyecto: eval&uacute;a su <strong>solidez conceptual, metodol&oacute;gica, normativa y social</strong>. A continuaci&oacute;n se desarrollan los 10 puntos que toda propuesta en Tizayuca debe cubrir para ser defendible.</p>
+
+<h3>Punto 1. Identificar el Problema Real &mdash; D&eacute;ficit Cuantificado</h3>
+<div class='info-box'>
+<p>No basta decir &ldquo;hace falta un hospital&rdquo;. Debes cuantificar: usando la f&oacute;rmula SEDATU, establece cu&aacute;ntas personas quedan sin cobertura de salud o educaci&oacute;n en el pol&iacute;gono de tu proyecto. Cita los datos del SIGEH, el PMDU y el programa presupuestario sectorial. El d&eacute;ficit debe ser el punto de partida de tu memoria de c&aacute;lculo de &aacute;reas.</p>
+</div>
+
+<h3>Punto 2. Anclar el Proyecto en el Marco Normativo</h3>
+<div class='info-box'>
+<p>Cada decisi&oacute;n del programa arquitect&oacute;nico debe vincularse con un documento oficial. &iquest;Por qu&eacute; una clínica y no un hospital de alta especialidad? Porque el PMD establece la l&iacute;nea de acci&oacute;n de <em>atenci&oacute;n primaria</em> para la poblaci&oacute;n no derechohabiente. &iquest;Por qu&eacute; un centro de formaci&oacute;n t&eacute;cnica y no una preparatoria convencional? Porque el PMDU exige el salto hacia industria 4.0 para atender la demanda del corredor AIFA.</p>
+</div>
+
+<h3>Punto 3. Demostrar la Viabilidad del Uso de Suelo</h3>
+<div class='info-box'>
+<p>Ubica tu predio en la zonificaci&oacute;n del PMDU/OT 2022. Verifica que el uso de suelo sea compatible con equipamiento de salud o educaci&oacute;n. El municipio tiene identificados 5 predios donados para proyectos estrat&eacute;gicos; uno de ellos puede ser la base real de tu propuesta. Menciona el COS (Coeficiente de Ocupaci&oacute;n del Suelo) y el CUS aplicables seg&uacute;n la zonificaci&oacute;n.</p>
+</div>
+
+<h3>Punto 4. Identificar al Usuario Real y Sus Necesidades</h3>
+<div class='info-box'>
+<p>El usuario no es gen&eacute;rico. En Tizayuca, el usuario del proyecto de salud es:<br>
+&bull; <strong>60,538 personas sin seguridad social</strong>, con perfil socioecon&oacute;mico de trabajadores de manufactura y log&iacute;stica.<br>
+&bull; Edad mediana: 28 a&ntilde;os, alta proporci&oacute;n de j&oacute;venes y familias j&oacute;venes con ni&ntilde;os.<br>
+&bull; Enfermedades prevenibles vinculadas a h&aacute;bitos de consumo y estilo de vida (diagn&oacute;stico oficial).<br>
+El usuario del proyecto educativo es: joven de 15&ndash;29 a&ntilde;os, con padres trabajadores en parques industriales, que busca formaci&oacute;n para quedarse a trabajar localmente.</p>
+</div>
+
+<h3>Punto 5. Dise&ntilde;ar el Programa Arquitect&oacute;nico con Base en Normativa</h3>
+<div class='info-box'>
+<p>Para salud: usa NOM-016-SSA3 (establecimientos de salud), lineamientos IMSS para hospitales de zona o ISSTE para CeSS. Calcula &aacute;reas m&iacute;nimas por consultorio, sala de espera, urgencias, etc.<br>
+Para educaci&oacute;n: usa los m&oacute;dulos CONALEP o lineamientos de la SEP/SNTE para bachillerato t&eacute;cnico. Define cupos, relaci&oacute;n m&sup2; por alumno, &aacute;reas acad&eacute;micas vs. &aacute;reas de servicio.<br>
+En ambos casos: incluye estacionamiento, accesibilidad universal (NOM-001-SSA3 y NOM-233-SSA1), circulaciones diferenciadas y zonas de servicio.</p>
+</div>
+
+<h3>Punto 6. Integraci&oacute;n con la Estructura Urbana</h3>
+<div class='info-box'>
+<p>El PMDU propone una <strong>ciudad polic&eacute;ntrica</strong>: nuevos n&uacute;cleos de servicios que eviten que todo el tr&aacute;fico y toda la demanda converjan en el centro hist&oacute;rico. Tu proyecto debe posicionarse como uno de esos nuevos centros, con accesibilidad peatonal, ciclista y de transporte p&uacute;blico. Menciona la distancia a paradas existentes y las vialidades estructurales del PMDU.</p>
+</div>
+
+<h3>Punto 7. Responder a los Riesgos del Territorio</h3>
+<div class='info-box'>
+<p>El CENAPRED considera todo el municipio de Tizayuca susceptible a <strong>hundimiento del suelo</strong>, lo que afecta infraestructura, caminos y tuberías. Esto no es un dato decorativo: implica decisiones estructurales concretas (cimentaci&oacute;n compensada o pilotes, control de cargas, juntas de dilataci&oacute;n). El proyecto tambi&eacute;n debe responder al d&eacute;ficit h&iacute;drico (-280.4 Mm&sup3;/a&ntilde;o seg&uacute;n CONAGUA), proponiendo captaci&oacute;n pluvial, tratamiento de grises y eficiencia en el consumo.</p>
+</div>
+
+<h3>Punto 8. Estrategia de Gesti&oacute;n y Financiamiento</h3>
+<div class='info-box'>
+<p>El PMDU menciona expl&iacute;citamente la necesidad de <strong>Asociaciones P&uacute;blico&ndash;Privadas (APP)</strong>. La carga financiera de la infraestructura es tan grande que los fondos municipales y estatales no bastan: se espera que las empresas del corredor AIFA cofinancien la infraestructura que ellas mismas usar&aacute;n. Tu proyecto puede proponer un modelo de gesti&oacute;n h&iacute;brido: inversi&oacute;n federal (IMSS/SEP) + municipio + aportaci&oacute;n empresarial del corredor log&iacute;stico.</p>
+</div>
+
+<h3>Punto 9. Anti-Gentrificaci&oacute;n: El Ancla de Cohesin Social</h3>
+<div class='info-box'>
+<p>El PMDU exige un estudio de gentrificaci&oacute;n previo al desarrollo de la zona de alta densidad. Esto no es burocracia: es la advertencia de que el &eacute;xito macroecon&oacute;mico puede ser un desastre a nivel micro. Tu proyecto arquitect&oacute;nico debe contemplar:</p>
+<p>&bull; <strong>Acceso universal y gratuito</strong> para la poblaci&oacute;n local, no solo para los nuevos residentes de alto ingreso.<br>
+&bull; Espacios de uso comunitario que retengan a la poblaci&oacute;n original.<br>
+&bull; Dise&ntilde;o que evite la imagen de &ldquo;isla tecnol&oacute;gica de cristal en medio de colonias sin banquetas&rdquo;.<br>
+&bull; Integraci&oacute;n con la escala de la calle y el tejido urbano existente.</p>
+</div>
+
+<h3>Punto 10. Propuesta de Indicadores de Evaluaci&oacute;n</h3>
+<div class='info-box'>
+<p>El sistema de semaforizaci&oacute;n del PMDU obliga a que cualquier proyecto sea medible. Propone para tu proyecto 3&ndash;5 indicadores de &eacute;xito post-ocupaci&oacute;n, por ejemplo:<br>
+&bull; % de poblaci&oacute;n del pol&iacute;gono que accede al servicio en el primer a&ntilde;o.<br>
+&bull; N&uacute;mero de consultas/atenciones por semana vs. meta.<br>
+&bull; Porcentaje de egresados que se insertan al mercado laboral del corredor AIFA.<br>
+&bull; Consumo de agua por m&sup2; vs. est&aacute;ndar nacional.<br>
+Esto transforma tu tesis en un instrumento de pol&iacute;tica p&uacute;blica con sentido, no solo un ejercicio visual.</p>
+</div>
+
+<div class='highlight-box'>
+<h3>Resumen del Argumento para la Defensa del Proyecto</h3>
+<p>Tu proyecto en Tizayuca no naci&oacute; de una intuici&oacute;n: <strong>es la respuesta directa a tres convergencias simulta&eacute;neas</strong> identificadas en documentos oficiales:<br><br>
+1. La explosi&oacute;n demogr&aacute;fica (11.5% anual) que colapsa la infraestructura de servicios existente.<br>
+2. La inversi&oacute;n masiva del corredor AIFA (157,000 millones de pesos) que genera 117,000 empleos y presiona la demanda de salud y educaci&oacute;n especializada.<br>
+3. La transici&oacute;n de ciudad dormitorio a nodo metropolitano, que exige equipamiento de escala regional para que la vida entera &mdash;trabajo, salud, formaci&oacute;n&mdash; transcurra en el mismo territorio.<br><br>
+Tizayuca no es donde m&aacute;s falta hace un proyecto (ese sería Ixmiquilpan) ni donde es m&aacute;s f&aacute;cil construirlo (ese ser&iacute;a Cuautitl&aacute;n). Es <strong>donde el impacto transformador es m&aacute;ximo y la viabilidad est&aacute; asegurada</strong>.</p>
+</div>
+</section>
+
+<div class='chapter-header' id='viabilidad'><h2>Cap&iacute;tulo 9: Viabilidad, Riesgos y Reflexi&oacute;n Final</h2><p>Los obst&aacute;culos que el plan anticipa y las preguntas que quedan abiertas</p></div>
+<div class='chapter-divider'></div>
+
+<section>
+<div class='section-label'>Cap&iacute;tulo 9</div>
+<h2 class='section-title'>Viabilidad, Riesgos y la Gran Pregunta Abierta</h2>
+
+<h3>9.1 Viabilidad: Los Tres Pilares</h3>
+
+<div class='stat-grid'>
+<div class='stat-card green'><div class='number'>&#10003;</div><div class='label'>Viabilidad T&eacute;cnica: PMDU vigente, zonificaci&oacute;n clara, IMDUyV activo</div></div>
+<div class='stat-card blue'><div class='number'>&#10003;</div><div class='label'>Viabilidad Social: Demanda ciudadana validada por m&eacute;todo Delphi</div></div>
+<div class='stat-card orange'><div class='number'>&#9651;</div><div class='label'>Viabilidad Financiera: Requiere APP y gesti&oacute;n estatal&ndash;federal activa</div></div>
+</div>
+
+<p>La viabilidad de Tizayuca como sede de proyectos de salud y educaci&oacute;n es s&oacute;lida en sus dimensiones t&eacute;cnica y social. El PMDU 2022 proporciona el andamiaje normativo; el PMD 2024&ndash;2027 establece las metas; y el m&eacute;todo Delphi legitima socialmente las decisiones. El &uacute;nico pilar que requiere gesti&oacute;n activa es el financiero, dado que la magnitud de la inversi&oacute;n supera la capacidad municipal exclusiva.</p>
+
+<h3>9.2 Riesgos Identificados</h3>
+
+<table>
+<tr><th>Riesgo</th><th>Fuente</th><th>Mitigaci&oacute;n</th></tr>
+<tr><td>Hundimiento del suelo (geot&eacute;cnico)</td><td>CENAPRED &ndash; PMDU</td><td>Estudio de mecnica de suelos, cimentaci&oacute;n especial</td></tr>
+<tr><td>D&eacute;ficit h&iacute;drico (-280.4 Mm&sup3;/a&ntilde;o)</td><td>CONAGUA &ndash; PMDU</td><td>Captaci&oacute;n pluvial, reciclaje de grises, PETAR</td></tr>
+<tr><td>Gentrificaci&oacute;n y desplazamiento de poblaci&oacute;n</td><td>PMDU, Instituto de Vivienda</td><td>Estudio previo, dise&ntilde;o para retenci&oacute;n de poblaci&oacute;n original</td></tr>
+<tr><td>Crecimiento de asentamientos irregulares</td><td>PMDU &ndash; +30%</td><td>Pol&iacute;gonos de atenci&oacute;n prioritaria, regularizaci&oacute;n</td></tr>
+<tr><td>Cambio de administraci&oacute;n cada 3 a&ntilde;os</td><td>Ciclo pol&iacute;tico municipal</td><td>IMDUyV como &oacute;rgano t&eacute;cnico independiente</td></tr>
+<tr><td>Automatizaci&oacute;n y obsolescencia del empleo log&iacute;stico</td><td>An&aacute;lisis NotebookLM</td><td>Curr&iacute;culo flexible + formaci&oacute;n en IA y adaptabilidad</td></tr>
+</table>
+
+<h3>9.3 La Reflexi&oacute;n que No Puede Ignorarse</h3>
+
+<div class='quote-block'>
+<p>Si toda esta transformaci&oacute;n tan radical de Tizayuca se basa en proveer mentes y manos para el ecosistema de un aeropuerto y sus parques industriales, &iquest;qu&eacute; ocurrir&aacute; dentro de 15 o 20 a&ntilde;os, cuando la inteligencia artificial, los veh&iacute;culos aut&oacute;nomos y la rob&oacute;tica avanzada eliminen la necesidad del 90% de ese personal operativo? &iquest;Estamos creando los pueblos fantasma tecnol&oacute;gicos del futuro?</p>
+<cite>&mdash; An&aacute;lisis NotebookLM &ndash; De ciudad dormitorio a cerebro del AIFA</cite>
+</div>
+
+<p>Esta pregunta no invalida el proyecto; lo enriquece. Un taller terminal que la formula y la responde en su dise&ntilde;o &mdash;proponiendo espacios flexibles, programas curriculares adaptables, y una arquitectura que funcione independientemente de la vocaci&oacute;n econ&oacute;mica del momento&mdash; es un proyecto de mayor calidad intelectual que uno que simplemente calca la demanda inmediata.</p>
+
+<p>La respuesta arquitect&oacute;nica a este riesgo es el concepto de <strong>infraestructura adaptable</strong>: edificios con plantas libres, instalaciones flexibles, espacios que hoy son laboratorios de log&iacute;stica y ma&ntilde;ana pueden ser talleres de programaci&oacute;n, centros de emprendimiento o incluso espacios comunitarios para adultos mayores. Un hospital que puede reconvertir alas enteras seg&uacute;n el perfil epidemiol&oacute;gico de cada d&eacute;cada.</p>
+
+<div class='highlight-box'>
+<h3>Conclusi&oacute;n: Tizayuca como Laboratorio en Tiempo Real</h3>
+<p>Tizayuca es, en este momento, <strong>el laboratorio urbano m&aacute;s interesante del pa&iacute;s</strong>: el lugar donde la teor&iacute;a del desarrollo urbano choca de frente con la realidad, donde la velocidad de la inversi&oacute;n industrial supera la capacidad de respuesta de los servicios sociales, y donde &mdash;por primera vez en su historia&mdash; existe un plan de desarrollo que anticipa los problemas en lugar de documentarlos cuando ya son irreversibles.<br><br>
+Para cualquier proyecto de taller terminal, Tizayuca ofrece algo invaluable: <strong>urgencia real, demanda cuantificable, marco normativo vigente y apertura institucional</strong>. El proyecto arquitect&oacute;nico que nace de este territorio no es un ejercicio acad&eacute;mico: es una propuesta de transformaci&oacute;n social con sustento en datos duros y voz ciudadana legitimada.</p>
+</div>
+
+<h3>Fuentes Consultadas</h3>
+<table>
+<tr><th>Fuente</th><th>Documento</th><th>URL / Referencia</th></tr>
+<tr><td>Gobierno Municipal Tizayuca</td><td>PMDU y OT de Tizayuca (actualiz. 2022)</td><td>imduyv.gob.mx / tizayuca.gob.mx</td></tr>
+<tr><td>Gobierno Municipal Tizayuca</td><td>PMD 2024&ndash;2027</td><td>tizayuca.gob.mx (publicado feb. 2025)</td></tr>
+<tr><td>Gobierno Municipal Tizayuca</td><td>Programa Presupuestario Salud 2024</td><td>tizayuca.gob.mx/hv/2024/evaluacion/...</td></tr>
+<tr><td>SIGEH &ndash; Gob. Hidalgo</td><td>Ficha municipal Tizayuca 13069</td><td>sigeh.hidalgo.gob.mx</td></tr>
+<tr><td>El Universal Hidalgo</td><td>Hospital IMSS en Tizayuca sigue en revisi&oacute;n (mar. 2026)</td><td>eluniversalhidalgo.com.mx</td></tr>
+<tr><td>Effeta.info</td><td>IMSS avala predio en Tizayuca (jul. 2025)</td><td>effeta.info</td></tr>
+<tr><td>Revista de Frente</td><td>Tizayuca presenta PMD 2024&ndash;2027 (feb. 2025)</td><td>revistadefrente.com</td></tr>
+<tr><td>NotebookLM &ndash; An&aacute;lisis 1</td><td>De ciudad dormitorio a cerebro del AIFA</td><td>Archivo adjunto (audio)</td></tr>
+<tr><td>NotebookLM &ndash; An&aacute;lisis 2</td><td>Radiograf&iacute;a urbana para centros de educaci&oacute;n digital</td><td>Archivo adjunto (audio)</td></tr>
+</table>
+</section>
+
+<div class='footer'>
+<p><strong>Tizayuca, Hidalgo &mdash; El Territorio de la Oportunidad</strong></p>
+<p>Documento de justificaci&oacute;n estrat&eacute;gica para proyectos de Salud y Educaci&oacute;n &bull; Taller Terminal de Arquitectura</p>
+<p style='margin-top:16px; color:#666'>Fuentes: Gobierno Municipal de Tizayuca &bull; SIGEH Hidalgo &bull; SEDATU &bull; INEGI &bull; El Universal Hidalgo &bull; An&aacute;lisis NotebookLM &bull; Marzo 2026</p>
+</div>
