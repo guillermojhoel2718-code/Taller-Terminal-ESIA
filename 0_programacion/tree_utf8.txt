@@ -1,0 +1,54 @@
+Listado de rutas de carpetas para el volumen Nuevo vol
+El n·mero de serie del volumen es E27B-0698
+F:\ESIA 10MO SEMESTRE\INVESTIGACION\TESIS-URBANA
+|   CONTEXTO_AGENTES.md
+|   MAESTRO.md
+|   REGLAS.md
+|   
++---01_Rubrica
+|       README.md
+|       Terminal 1 26-2.pdf
+|       
++---02_Datos
+|   |   README.md
+|   |   
+|   +---Mapas
+|   +---Municipios
+|   |       01_Tepotzotlan.json
+|   |       02_Tizayuca.json
+|   |       03_Cuautitlan.json
+|   |       04_Ixmiquilpan.json
+|   |       
+|   \---Tablas
++---03_Referencias
+|   |   indice_refs.md
+|   |   README.md
+|   |   
+|   +---Analogos
+|   +---Estadisticas
+|   +---MarcoTeorico
+|   \---Normatividad
++---04_Textos
+|   |   README.md
+|   |   
+|   +---Borradores
+|   +---Unidad_I
+|   +---Unidad_II
+|   \---Unidad_III
++---05_Presentacion
+|   |   canva_link.txt
+|   |   README.md
+|   |   
+|   +---Assets
+|   \---Versiones
++---06_Reportes
+|       checklist_unidad1.md
+|       README.md
+|       reporte_apa.md
+|       reporte_pendientes.md
+|       reporte_rubrica.md
+|       
++---07_Outputs
+|       README.md
+|       
+\---outputs

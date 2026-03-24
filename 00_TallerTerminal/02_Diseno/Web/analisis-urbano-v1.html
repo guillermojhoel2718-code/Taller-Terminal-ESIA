@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis Urbano Comparativo v1 — Hernández Gómez</title>
+<style>
+  :root {
+    --bg-dark: #1A1A1A;
+    --bg-light: #F5F0E8;
+    --ocre: #C8A96E;
+    --musgo: #4A7C59;
+    --terra: #D4441C;
+    --acero: #6B8FA3;
+    --bronce: #8B6914;
+    --gris: #666;
+    --tepo: #C8A96E;
+    --tiza: #4A7C59;
+    --cuau: #D4441C;
+    --ixmi: #6B8FA3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Georgia', serif; background: var(--bg-dark); color: #fff; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(26,26,26,0.97); border-bottom: 1px solid #333;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8rem 2rem;
+  }
+  .nav-brand { color: var(--ocre); font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
+  .nav-version { background: var(--terra); color: #fff; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 3px; font-family: monospace; }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a { color: #aaa; text-decoration: none; font-size: 0.8rem; font-family: 'Calibri', sans-serif; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ocre); }
+
+  /* SECTIONS */
+  section { min-height: 100vh; padding: 7rem 4rem 4rem; }
+  section.light { background: var(--bg-light); color: var(--bg-dark); }
+  section.dark { background: var(--bg-dark); color: #fff; }
+
+  /* HERO */
+  .hero { display: flex; flex-direction: column; justify-content: center; min-height: 100vh; padding: 6rem 4rem 4rem; }
+  .hero-tag { color: var(--ocre); font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1.5rem; font-family: 'Calibri', sans-serif; }
+  .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 span { color: var(--ocre); }
+  .hero-sub { color: #aaa; font-size: 1.1rem; font-family: 'Calibri', sans-serif; margin-bottom: 2.5rem; max-width: 600px; }
+  .mun-chips { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .chip { padding: 0.4rem 1rem; border-radius: 2px; font-size: 0.8rem; font-family: 'Calibri', sans-serif; font-weight: bold; letter-spacing: 1px; }
+  .chip-tepo { background: var(--tepo); color: #1A1A1A; }
+  .chip-tiza { background: var(--tiza); color: #fff; }
+  .chip-cuau { background: var(--cuau); color: #fff; }
+  .chip-ixmi { background: var(--ixmi); color: #fff; }
+  .hero-meta { border-top: 1px solid #333; padding-top: 1.5rem; display: flex; gap: 3rem; }
+  .meta-item label { display: block; color: #555; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-family: 'Calibri', sans-serif; margin-bottom: 0.3rem; }
+  .meta-item span { color: var(--ocre); font-size: 0.9rem; }
+
+  /* SECTION TITLES */
+  .sec-label { color: var(--ocre); font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; font-family: 'Calibri', sans-serif; margin-bottom: 0.8rem; }
+  h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); margin-bottom: 0.5rem; }
+  .sec-desc { font-family: 'Calibri', sans-serif; font-size: 1rem; margin-bottom: 3rem; opacity: 0.7; max-width: 700px; }
+
+  /* STAT CARDS */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+  .stat-card { background: rgba(255,255,255,0.04); border: 1px solid #2a2a2a; padding: 1.5rem; border-top: 3px solid; }
+  .stat-card.tepo { border-top-color: var(--tepo); }
+  .stat-card.tiza { border-top-color: var(--tiza); }
+  .stat-card.cuau { border-top-color: var(--cuau); }
+  .stat-card.ixmi { border-top-color: var(--ixmi); }
+  .stat-mun { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-family: 'Calibri', sans-serif; opacity: 0.6; margin-bottom: 0.5rem; }
+  .stat-num { font-size: 2.5rem; font-weight: bold; line-height: 1; margin-bottom: 0.3rem; }
+  .stat-num.tepo { color: var(--tepo); }
+  .stat-num.tiza { color: var(--tiza); }
+  .stat-num.cuau { color: var(--cuau); }
+  .stat-num.ixmi { color: var(--ixmi); }
+  .stat-label { font-size: 0.8rem; font-family: 'Calibri', sans-serif; opacity: 0.7; }
+  .stat-sub { font-size: 0.75rem; font-family: 'Calibri', sans-serif; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid #2a2a2a; opacity: 0.6; }
+
+  /* LIGHT SECTION CARDS */
+  .light .stat-card { background: #fff; border-color: #e0d8cc; }
+  .light .stat-sub { border-top-color: #e0d8cc; }
+
+  /* BAR CHARTS */
+  .bar-group { margin-bottom: 1.2rem; }
+  .bar-label { display: flex; justify-content: space-between; font-family: 'Calibri', sans-serif; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .bar-track { background: rgba(255,255,255,0.08); height: 10px; border-radius: 2px; overflow: hidden; }
+  .light .bar-track { background: #e0d8cc; }
+  .bar-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
+  .bar-val { font-weight: bold; }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-family: 'Calibri', sans-serif; font-size: 0.85rem; }
+  .data-table th { background: var(--bg-dark); color: var(--ocre); padding: 0.8rem 1rem; text-align: left; font-weight: bold; letter-spacing: 1px; }
+  .data-table td { padding: 0.7rem 1rem; border-bottom: 1px solid #e0d8cc; }
+  .data-table tr:nth-child(even) td { background: #EDE3D0; }
+  .data-table tr:nth-child(odd) td { background: #F5F0E8; }
+  .data-table td:first-child { font-weight: bold; color: #333; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 2px; font-size: 0.75rem; color: #fff; font-weight: bold; }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .four-col { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+
+  /* DEFICIT CARDS */
+  .def-card { padding: 1.5rem; background: rgba(255,255,255,0.04); border-left: 4px solid; margin-bottom: 1rem; }
+  .def-card.tepo { border-left-color: var(--tepo); }
+  .def-card.tiza { border-left-color: var(--tiza); }
+  .def-card.cuau { border-left-color: var(--cuau); }
+  .def-card.ixmi { border-left-color: var(--ixmi); }
+  .def-mun { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-family: 'Calibri', sans-serif; margin-bottom: 0.5rem; }
+  .def-mun.tepo { color: var(--tepo); }
+  .def-mun.tiza { color: var(--tiza); }
+  .def-mun.cuau { color: var(--cuau); }
+  .def-mun.ixmi { color: var(--ixmi); }
+  .def-title { font-size: 1rem; margin-bottom: 0.5rem; }
+  .def-text { font-family: 'Calibri', sans-serif; font-size: 0.85rem; opacity: 0.7; line-height: 1.5; }
+
+  /* REFS */
+  .ref-section { margin-bottom: 2.5rem; }
+  .ref-cat { color: var(--ocre); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; font-family: 'Calibri', sans-serif; border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+  .ref-item { font-family: 'Calibri', sans-serif; font-size: 0.82rem; line-height: 1.6; margin-bottom: 0.8rem; padding-left: 1.2rem; border-left: 2px solid #2a2a2a; opacity: 0.8; }
+  .ref-item a { color: var(--acero); }
+
+  /* FOOTER */
+  footer { background: #111; padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; }
+  .footer-brand { color: var(--ocre); font-size: 0.8rem; letter-spacing: 2px; }
+  .footer-info { font-family: 'Calibri', sans-serif; font-size: 0.75rem; color: #555; }
+
+  /* STITCH PROMPT BOX */
+  .stitch-box { background: #0f0f0f; border: 1px solid #2a2a2a; padding: 2rem; margin-top: 3rem; }
+  .stitch-label { color: var(--terra); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; font-family: monospace; margin-bottom: 1rem; }
+  .stitch-box pre { font-family: monospace; font-size: 0.78rem; color: #aaa; white-space: pre-wrap; line-height: 1.7; }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    .stat-grid, .four-col { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    section { padding: 6rem 1.5rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">Análisis Urbano Comparativo</span>
+  <div class="nav-links">
+    <a href="#poblacion">Población</a>
+    <a href="#vivienda">Vivienda</a>
+    <a href="#conectividad">Conectividad</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#pobreza">Pobreza</a>
+    <a href="#suelo">Suelo</a>
+    <a href="#tabla">Tabla</a>
+    <a href="#referencias">Referencias</a>
+  </div>
+  <span class="nav-version">v1.0 — Mar 2026</span>
+</nav>
+
+<!-- HERO -->
+<section class="dark hero">
+  <div class="hero-tag">Taller Terminal I · Ingeniería Arquitectónica</div>
+  <h1>Investigación de <span>Proyecto</span></h1>
+  <p class="hero-sub">Propuesta para Centro de Teletrabajo y Aprendizaje Digital — Análisis Urbano Comparativo Zona Norte CDMX</p>
+  <div class="mun-chips">
+    <span class="chip chip-tepo">Tepotzotlán · EdoMéx · 33 km</span>
+    <span class="chip chip-tiza">Tizayuca · Hidalgo · 45 km</span>
+    <span class="chip chip-cuau">Cuautitlán · EdoMéx · 25 km</span>
+    <span class="chip chip-ixmi">Ixmiquilpan · Hidalgo · 105 km</span>
+  </div>
+  <div class="hero-meta">
+    <div class="meta-item"><label>Alumno</label><span>Hernández Gómez Guillermo Jhoel</span></div>
+    <div class="meta-item"><label>Fuentes</label><span>INEGI 2020 · CONEVAL 2020 · SEDUI · SIGEH</span></div>
+    <div class="meta-item"><label>Corredor</label><span>MEX-57D Norte CDMX</span></div>
+    <div class="meta-item"><label>Versión</label><span>v1.0 · Marzo 2026</span></div>
+  </div>
+</section>
+
+<!-- POBLACIÓN -->
+<section class="dark fade-in" id="poblacion">
+  <div class="sec-label">01 · Demografía</div>
+  <h2>Indicadores de Población</h2>
+  <p class="sec-desc">Población total combinada: 549,799 hab. Tizayuca registra el mayor crecimiento intercensal (+72.7%). Cuautitlán es el más poblado y el más denso.</p>
+  <div class="stat-grid">
+    <div class="stat-card tepo">
+      <div class="stat-mun">Tepotzotlán · EdoMéx</div>
+      <div class="stat-num tepo">103,696</div>
+      <div class="stat-label">habitantes · Censo 2020</div>
+      <div class="stat-sub">Densidad: 496 hab/km² · Crecimiento +17.1%</div>
+    </div>
+    <div class="stat-card tiza">
+      <div class="stat-mun">Tizayuca · Hidalgo</div>
+      <div class="stat-num tiza">168,302</div>
+      <div class="stat-label">habitantes · Censo 2020</div>
+      <div class="stat-sub">Densidad: 2,191 hab/km² · Crecimiento +72.7% ⚡</div>
+    </div>
+    <div class="stat-card cuau">
+      <div class="stat-mun">Cuautitlán · EdoMéx</div>
+      <div class="stat-num cuau">178,847</div>
+      <div class="stat-label">habitantes · Censo 2020</div>
+      <div class="stat-sub">Densidad: 4,377 hab/km² · Mayor densidad del grupo</div>
+    </div>
+    <div class="stat-card ixmi">
+      <div class="stat-mun">Ixmiquilpan · Hidalgo</div>
+      <div class="stat-num ixmi">98,654</div>
+      <div class="stat-label">habitantes · Censo 2020</div>
+      <div class="stat-sub">Densidad: 202 hab/km² · 54.66% población rural</div>
+    </div>
+  </div>
+  <p style="font-family:Calibri,sans-serif; font-size:0.8rem; opacity:0.5;">Fuente: INEGI. (2020). Censo de Población y Vivienda 2020. https://www.inegi.org.mx/programas/ccpv/2020/</p>
+</section>
+
+<!-- VIVIENDA -->
+<section class="light fade-in" id="vivienda">
+  <div class="sec-label">02 · Vivienda</div>
+  <h2>Condiciones de Vivienda</h2>
+  <p class="sec-desc">Alta estabilidad residencial (~70% viviendas propias) en todos los municipios. Déficit de equipamiento educativo-digital justifica el proyecto.</p>
+  <div class="two-col">
+    <div>
+      <h3 style="margin-bottom:1.5rem; font-size:1.1rem;">Ocupantes por Vivienda</h3>
+      <div class="bar-group">
+        <div class="bar-label"><span style="color:var(--tepo)">Tepotzotlán</span><span class="bar-val">3.8</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%; background:var(--tepo)"></div></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-label"><span style="color:var(--tiza)">Tizayuca</span><span class="bar-val">3.5</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:87%; background:var(--tiza)"></div></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-label"><span style="color:var(--cuau)">Cuautitlán</span><span class="bar-val">3.5</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:87%; background:var(--cuau)"></div></div>
+      </div>
+      <div class="bar-group">
+        <div class="bar-label"><span style="color:var(--ixmi)">Ixmiquilpan</span><span class="bar-val">3.7</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:92%; background:var(--ixmi)"></div></div>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-bottom:1.5rem; font-size:1.1rem;">Tenencia de Vivienda (promedio)</h3>
+      <div style="display:flex; gap:1rem; margin-bottom:2rem;">
+        <div style="flex:70; background:var(--musgo); height:40px; display:flex; align-items:center; justify-content:center; font-family:Calibri; font-size:0.85rem; color:#fff; font-weight:bold;">Propias ~70%</div>
+        <div style="flex:12; background:var(--terra); height:40px; display:flex; align-items:center; justify-content:center; font-family:Calibri; font-size:0.85rem; color:#fff; font-weight:bold;">Renta ~12%</div>
+        <div style="flex:18; background:#ccc; height:40px; display:flex; align-items:center; justify-content:center; font-family:Calibri; font-size:0.85rem; color:#333; font-weight:bold;">Otras 18%</div>
+      </div>
+      <p style="font-family:Calibri; font-size:0.9rem; line-height:1.7; color:#444;">La estabilidad residencial indica arraigo territorial y potencial de inversión comunitaria. El déficit de equipamiento educativo-digital justifica el proyecto de Centro de Teletrabajo y Aprendizaje Digital.</p>
+      <div style="margin-top:1.5rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+        <div style="background:#fff; padding:1rem; border-left:3px solid var(--tepo);">
+          <div style="font-size:0.7rem; font-family:Calibri; opacity:0.6; margin-bottom:0.3rem;">VIVIENDAS HABITADAS</div>
+          <div style="font-size:0.9rem; font-family:Calibri;">Cuautitlán: <strong>52,208</strong></div>
+          <div style="font-size:0.9rem; font-family:Calibri;">Tizayuca: <strong>47,529</strong></div>
+          <div style="font-size:0.9rem; font-family:Calibri;">Ixmiquilpan: <strong>26,586</strong></div>
+          <div style="font-size:0.9rem; font-family:Calibri;">Tepotzotlán: <strong>27,100</strong></div>
+        </div>
+        <div style="background:#fff; padding:1rem; border-left:3px solid var(--musgo);">
+          <div style="font-size:0.7rem; font-family:Calibri; opacity:0.6; margin-bottom:0.3rem;">ALTITUD / CONTEXTO</div>
+          <div style="font-size:0.9rem; font-family:Calibri;">Tepotzotlán: 2,250 msnm</div>
+          <div style="font-size:0.9rem; font-family:Calibri;">Tizayuca: 2,260 msnm</div>
+          <div style="font-size:0.9rem; font-family:Calibri;">Cuautitlán: 2,250 msnm</div>
+          <div style="font-size:0.9rem; font-family:Calibri;">Ixmiquilpan: 1,700 msnm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="font-family:Calibri,sans-serif; font-size:0.8rem; opacity:0.5; margin-top:2rem;">Fuente: INEGI. (2020). Censo de Población y Vivienda 2020.</p>
+</section>
+
+<!-- CONECTIVIDAD -->
+<section class="dark fade-in" id="conectividad">
+  <div class="sec-label">03 · Brecha Digital</div>
+  <h2>Conectividad Digital</h2>
+  <p class="sec-desc">Indicador crítico para la viabilidad del Centro de Teletrabajo. Cuautitlán lidera con 72.8%; Ixmiquilpan representa la mayor urgencia de intervención con 33.1%.</p>
+  <div class="stat-grid" style="margin-bottom:2.5rem;">
+    <div class="stat-card cuau">
+      <div class="stat-mun">Cuautitlán</div>
+      <div class="stat-num cuau">72.8%</div>
+      <div class="stat-label">viviendas con internet</div>
+      <div class="stat-sub">Mayor conectividad · IRS -1.418 (7° menor rezago MX)</div>
+    </div>
+    <div class="stat-card tiza">
+      <div class="stat-mun">Tizayuca</div>
+      <div class="stat-num tiza">54.2%</div>
+      <div class="stat-label">viviendas con internet</div>
+      <div class="stat-sub">Conectividad intermedia · Computadoras 39.65%</div>
+    </div>
+    <div class="stat-card tepo">
+      <div class="stat-mun">Tepotzotlán</div>
+      <div class="stat-num tepo">48.0%</div>
+      <div class="stat-label">viviendas con internet</div>
+      <div class="stat-sub">Conectividad intermedia · Pueblo Mágico</div>
+    </div>
+    <div class="stat-card ixmi" style="border:2px solid var(--terra);">
+      <div class="stat-mun">Ixmiquilpan ⚠️</div>
+      <div class="stat-num ixmi">33.1%</div>
+      <div class="stat-label">viviendas con internet</div>
+      <div class="stat-sub">Mayor brecha digital · Computadoras 25.91%</div>
+    </div>
+  </div>
+  <div style="background:rgba(212,68,28,0.1); border:1px solid var(--terra); padding:1.5rem; font-family:Calibri; font-size:0.9rem; line-height:1.7;">
+    ⚠️ <strong>Brecha crítica:</strong> Ixmiquilpan tiene la menor conectividad (33.1%) combinada con la mayor pobreza (50.24%) del grupo. Esto justifica un equipamiento con infraestructura de conectividad robusta y subsidiada como prioridad de diseño.
+  </div>
+  <p style="font-family:Calibri,sans-serif; font-size:0.8rem; opacity:0.5; margin-top:1.5rem;">Fuente: INEGI Censo 2020; DataMéxico, Secretaría de Economía (2024).</p>
+</section>
+
+<!-- SERVICIOS -->
+<section class="light fade-in" id="servicios">
+  <div class="sec-label">04 · Infraestructura</div>
+  <h2>Servicios Básicos</h2>
+  <p class="sec-desc">Electricidad superior al 99% en todos los municipios. La brecha más crítica es agua potable en Ixmiquilpan (62.2%) frente al 95.8% de Cuautitlán.</p>
+  <div style="overflow-x:auto;">
+    <table class="data-table" style="margin-bottom:2rem;">
+      <thead>
+        <tr>
+          <th>Servicio</th>
+          <th><span class="badge" style="background:var(--tepo); color:#1A1A1A;">Tepotzotlán</span></th>
+          <th><span class="badge" style="background:var(--tiza)">Tizayuca</span></th>
+          <th><span class="badge" style="background:var(--cuau)">Cuautitlán</span></th>
+          <th><span class="badge" style="background:var(--ixmi)">Ixmiquilpan</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Agua potable %</td><td>95.1%</td><td>90.8% ⚠️</td><td>95.8%</td><td>62.2% 🔴</td></tr>
+        <tr><td>Drenaje %</td><td>~97.9%</td><td>99.5%</td><td>99.6%</td><td>94.5%</td></tr>
+        <tr><td>Electricidad %</td><td>>99%</td><td>99.7%</td><td>99.9%</td><td>99.1%</td></tr>
+        <tr><td>Internet %</td><td>48.0%</td><td>54.2%</td><td>72.8%</td><td>33.1%</td></tr>
+        <tr><td>Viviendas habitadas</td><td>27,100</td><td>47,529</td><td>52,208</td><td>26,586</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-family:Calibri,sans-serif; font-size:0.8rem; opacity:0.5;">Fuente: INEGI Censo 2020; SIGEH Hidalgo (2020-2026).</p>
+</section>
+
+<!-- POBREZA -->
+<section class="dark fade-in" id="pobreza">
+  <div class="sec-label">05 · Condiciones Socioeconómicas</div>
+  <h2>Pobreza y Rezago Social</h2>
+  <p class="sec-desc">GINI: Tepotzotlán 0.35 | Tizayuca 0.30. Rezago educativo de 9% (Cuautitlán) a 22% (Ixmiquilpan). Tizayuca: 23% de trabajadores tarda más de 1h en trasladarse.</p>
+  <div class="stat-grid" style="margin-bottom:2.5rem;">
+    <div class="stat-card ixmi" style="border:2px solid var(--terra);">
+      <div class="stat-mun">🔴 Ixmiquilpan · #1</div>
+      <div class="stat-num" style="color:var(--terra)">50.2%</div>
+      <div class="stat-label">en pobreza total</div>
+      <div class="stat-sub">Extrema 6.25% · Rezago educativo 22% · Analfabetismo mayor del grupo</div>
+    </div>
+    <div class="stat-card tepo">
+      <div class="stat-mun">Tepotzotlán · #2</div>
+      <div class="stat-num tepo">46.3%</div>
+      <div class="stat-label">en pobreza total</div>
+      <div class="stat-sub">Extrema 6.05% · Rezago educativo 17% · GINI 0.35 · Analfabetismo 2.60%</div>
+    </div>
+    <div class="stat-card tiza">
+      <div class="stat-mun">Tizayuca · #3</div>
+      <div class="stat-num tiza">35.9%</div>
+      <div class="stat-label">en pobreza total</div>
+      <div class="stat-sub">Extrema 3.47% · Rezago educativo 10% · GINI 0.30 · Analfabetismo 1.58%</div>
+    </div>
+    <div class="stat-card cuau">
+      <div class="stat-mun">Cuautitlán · #4</div>
+      <div class="stat-num cuau">34.2%</div>
+      <div class="stat-label">en pobreza total</div>
+      <div class="stat-sub">Extrema 2.96% · Rezago educativo 9% · IRS muy bajo · Analfabetismo 0.98%</div>
+    </div>
+  </div>
+  <div style="background:rgba(200,169,110,0.1); border:1px solid var(--ocre); padding:1.5rem; font-family:Calibri; font-size:0.9rem; line-height:1.7;">
+    💡 <strong>Dato clave para el proyecto:</strong> Tizayuca: 23% de los trabajadores tarda más de 1 hora en trasladarse. Un Centro de Teletrabajo ahorraría entre 2 y 4 horas diarias por persona, reduciendo costos de movilidad y mejorando calidad de vida. Nivel educativo predominante en la zona: secundaria terminada (~33%), señalando la necesidad de equipamiento educativo digital accesible.
+  </div>
+  <p style="font-family:Calibri,sans-serif; font-size:0.8rem; opacity:0.5; margin-top:1.5rem;">Fuente: CONEVAL. (2020). Medición de Pobreza Municipal 2020; INEGI Censo 2020 Cuestionario Ampliado.</p>
+</section>
+
+<!-- SUELO -->
+<section class="light fade-in" id="suelo">
+  <div class="sec-label">06 · Territorio</div>
+  <h2>Caracterización del Suelo y Déficit</h2>
+  <p class="sec-desc">Perfiles territoriales contrastantes: desde municipio industrial consolidado (Cuautitlán) hasta semiurbano con vocación rural (Ixmiquilpan).</p>
+  <div class="four-col">
+    <div class="def-card tepo">
+      <div class="def-mun tepo">Tepotzotlán</div>
+      <div class="def-title">Aluvial volcánico · Habitacional-Industrial</div>
+      <div class="def-text">Período: Cuaternario · Eje Neovolcánico · Feozem háplico · Superficie 208.83 km² · 2,250 msnm</div>
+      <div style="margin-top:0.8rem; padding-top:0.8rem; border-top:1px solid #e0d8cc;">
+        <div style="font-size:0.7rem; font-family:Calibri; text-transform:uppercase; letter-spacing:1px; opacity:0.6; margin-bottom:0.3rem;">Déficit principal</div>
+        <div style="font-family:Calibri; font-size:0.85rem;">Salud, educación, cultura y recreación. Riesgo: expansión irregular del suelo.</div>
+      </div>
+    </div>
+    <div class="def-card tiza">
+      <div class="def-mun tiza">Tizayuca</div>
+      <div class="def-title">Urbano consolidado · Habitacional-Industrial</div>
+      <div class="def-text">Zona metropolitana · Suelo predominantemente urbano · Superficie 76.8 km² · 2,260 msnm</div>
+      <div style="margin-top:0.8rem; padding-top:0.8rem; border-top:1px solid #e0d8cc;">
+        <div style="font-size:0.7rem; font-family:Calibri; text-transform:uppercase; letter-spacing:1px; opacity:0.6; margin-bottom:0.3rem;">Déficit principal</div>
+        <div style="font-family:Calibri; font-size:0.85rem;">Equipamiento educativo y cultural. Crecimiento acelerado sin infraestructura suficiente.</div>
+      </div>
+    </div>
+    <div class="def-card cuau">
+      <div class="def-mun cuau">Cuautitlán</div>
+      <div class="def-title">Mixto · Habitacional-Industrial-Comercial</div>
+      <div class="def-text">Lomeríos suaves y planicies aluviales · Variable · Superficie 42.5 km² · 2,250 msnm · Hub logístico</div>
+      <div style="margin-top:0.8rem; padding-top:0.8rem; border-top:1px solid #e0d8cc;">
+        <div style="font-size:0.7rem; font-family:Calibri; text-transform:uppercase; letter-spacing:1px; opacity:0.6; margin-bottom:0.3rem;">Déficit principal</div>
+        <div style="font-family:Calibri; font-size:0.85rem;">PDU pendiente de revisión. Menor rezago social del grupo. Oportunidad de campus innovación.</div>
+      </div>
+    </div>
+    <div class="def-card ixmi">
+      <div class="def-mun ixmi">Ixmiquilpan</div>
+      <div class="def-title">Feozem-Xerosol · Agrícola-Pastizal</div>
+      <div class="def-text">Valle del Mezquital · Matorral xerófilo · Superficie 486.21 km² · 1,700 msnm · 54.66% rural</div>
+      <div style="margin-top:0.8rem; padding-top:0.8rem; border-top:1px solid #e0d8cc;">
+        <div style="font-size:0.7rem; font-family:Calibri; text-transform:uppercase; letter-spacing:1px; opacity:0.6; margin-bottom:0.3rem;">Déficit principal</div>
+        <div style="font-family:Calibri; font-size:0.85rem;">Equipamiento cultural y recreativo. Mayor pobreza del grupo 50.24%. Centro comunitario rural.</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-family:Calibri,sans-serif; font-size:0.8rem; opacity:0.5; margin-top:2rem;">Fuente: INEGI Compendio Geográfico Municipal; SEDUI EdoMéx PMDU 2023; SIGEH Hidalgo 2020.</p>
+</section>
+
+<!-- TABLA -->
+<section class="light fade-in" id="tabla">
+  <div class="sec-label">07 · Datos Integrados</div>
+  <h2>Tabla Comparativa Maestra</h2>
+  <p class="sec-desc">Todos los indicadores clave por municipio. Fuente: INEGI Censo 2020, CONEVAL 2020, SEDUI EdoMéx, SIGEH Hidalgo.</p>
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Indicador</th>
+          <th><span class="badge" style="background:var(--tepo); color:#1A1A1A;">Tepotzotlán</span></th>
+          <th><span class="badge" style="background:var(--tiza)">Tizayuca</span></th>
+          <th><span class="badge" style="background:var(--cuau)">Cuautitlán</span></th>
+          <th><span class="badge" style="background:var(--ixmi)">Ixmiquilpan</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Población total</td><td>103,696</td><td>168,302</td><td>178,847</td><td>98,654</td></tr>
+        <tr><td>Superficie km²</td><td>208.83</td><td>76.8</td><td>42.50</td><td>486.21</td></tr>
+        <tr><td>Densidad hab/km²</td><td>496</td><td>2,191</td><td>4,377</td><td>202</td></tr>
+        <tr><td>Viviendas habitadas</td><td>27,100</td><td>47,529</td><td>52,208</td><td>26,586</td></tr>
+        <tr><td>Ocupantes/vivienda</td><td>3.8</td><td>3.5</td><td>3.5</td><td>3.7</td></tr>
+        <tr><td>Viviendas propias %</td><td>~70%</td><td>~70%</td><td>~70%</td><td>~70%</td></tr>
+        <tr><td>Viviendas renta %</td><td>~12%</td><td>~12%</td><td>~12%</td><td>~12%</td></tr>
+        <tr><td>Agua potable %</td><td>95.1%</td><td>90.8%</td><td>95.8%</td><td>62.2% 🔴</td></tr>
+        <tr><td>Drenaje %</td><td>~97.9%</td><td>99.5%</td><td>99.6%</td><td>94.5%</td></tr>
+        <tr><td>Electricidad %</td><td>>99%</td><td>99.7%</td><td>99.9%</td><td>99.1%</td></tr>
+        <tr><td>Internet % viviendas</td><td>48.0%</td><td>54.2%</td><td>72.8% ✅</td><td>33.1% ⚠️</td></tr>
+        <tr><td>Pobreza total %</td><td>46.3%</td><td>35.9%</td><td>34.2%</td><td>50.2% 🔴</td></tr>
+        <tr><td>Pobreza extrema %</td><td>6.05%</td><td>3.47%</td><td>2.96%</td><td>6.25%</td></tr>
+        <tr><td>Rezago educativo %</td><td>17%</td><td>10%</td><td>9%</td><td>22%</td></tr>
+        <tr><td>Analfabetismo %</td><td>2.60%</td><td>1.58%</td><td>0.98%</td><td>Mayor rezago</td></tr>
+        <tr><td>GINI</td><td>0.35</td><td>0.30</td><td>—</td><td>—</td></tr>
+        <tr><td>Tipo de suelo</td><td>Aluvial volcánico</td><td>Urbano consolidado</td><td>Mixto aluvial</td><td>Feozem-Xerosol</td></tr>
+        <tr><td>Uso predominante</td><td>Habitacional-Industrial</td><td>Habitacional-Industrial</td><td>Mixto</td><td>Agrícola-Pastizal</td></tr>
+        <tr><td>Déficit principal</td><td>Cultural/Educativo</td><td>Equipamiento</td><td>PDU pendiente</td><td>Equipamiento rural</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- REFERENCIAS -->
+<section class="dark fade-in" id="referencias">
+  <div class="sec-label">08 · Bibliografía</div>
+  <h2>Referencias APA 7</h2>
+  <p class="sec-desc">Fuentes oficiales consultadas para la elaboración de la base de datos técnica. Marzo 2026.</p>
+
+  <div class="ref-section">
+    <div class="ref-cat">Fuentes Estadísticas Oficiales</div>
+    <div class="ref-item">INEGI. (2020). <em>Censo de Población y Vivienda 2020</em> [Conjunto de datos]. Instituto Nacional de Estadística y Geografía. <a href="https://www.inegi.org.mx/programas/ccpv/2020/" target="_blank">https://www.inegi.org.mx/programas/ccpv/2020/</a> (Consultado en marzo de 2026).</div>
+    <div class="ref-item">CONEVAL. (2020). <em>Pobreza a nivel municipio 2010–2020</em> [Base de datos]. Consejo Nacional de Evaluación de la Política de Desarrollo Social. <a href="https://www.coneval.org.mx/Medicion/Paginas/Pobreza-municipio-2010-2020.aspx" target="_blank">https://www.coneval.org.mx</a> (Consultado en marzo de 2026).</div>
+    <div class="ref-item">Secretaría de Economía. (2020-2026). <em>DataMéxico</em> [Plataforma de datos]. <a href="https://www.economia.gob.mx/datamexico/" target="_blank">https://www.economia.gob.mx/datamexico/</a> (Consultado en marzo de 2026).</div>
+    <div class="ref-item">Gobierno del Estado de Hidalgo. (2020-2026). <em>Sistema de Información Geográfica del Estado de Hidalgo (SIGEH)</em> [Visor geográfico]. <a href="https://sigeh.hidalgo.gob.mx" target="_blank">https://sigeh.hidalgo.gob.mx</a> (Consultado en marzo de 2026).</div>
+  </div>
+
+  <div class="ref-section">
+    <div class="ref-cat">Planes de Desarrollo Urbano</div>
+    <div class="ref-item">SEDUI. (2023). <em>Plan Municipal de Desarrollo Urbano de Tepotzotlán, Estado de México</em> [PDF]. <a href="https://sedui.edomex.gob.mx/sites/sedui.edomex.gob.mx/files/files/planes_municipales/Tepotzotlan/TEPOTZOTLAN-PMDU.pdf" target="_blank">sedui.edomex.gob.mx</a></div>
+    <div class="ref-item">Presidencia Municipal de Tizayuca. (2024). <em>Plan Municipal de Desarrollo 2024–2027, Tizayuca, Hidalgo</em>. Gobierno Municipal. (Consultado en marzo de 2026).</div>
+    <div class="ref-item">SEDUI EdoMéx. (s.f.). <em>Programa de Desarrollo Urbano del Centro de Población de Cuautitlán</em>. <a href="https://sedui.edomex.gob.mx" target="_blank">sedui.edomex.gob.mx</a></div>
+    <div class="ref-item">Presidencia Municipal de Ixmiquilpan. (2024). <em>Plan Municipal de Desarrollo 2024–2027, Ixmiquilpan, Hidalgo</em>. <a href="https://geoixmi.com/documentos/Plan%20Municipal%20de%20Desarrollo%20Ixmiquilpan%C2%A02024-2027.pdf" target="_blank">geoixmi.com</a></div>
+  </div>
+
+  <div class="ref-section">
+    <div class="ref-cat">Marco Teórico — Urbanismo y Teletrabajo</div>
+    <div class="ref-item">CONEVAL. (2020). <em>Pobreza y rezago social a nivel municipal 2010–2020: Evidencias para el análisis territorial de la desigualdad y la brecha digital en México</em> [Informe analítico]. <a href="https://www.coneval.org.mx" target="_blank">coneval.org.mx</a> (Consultado en marzo de 2026).</div>
+    <div class="ref-item">INEGI. (2020). <em>Panorama sociodemográfico de México 2020: Disponibilidad de TIC y conectividad digital</em> [Tableros interactivos]. <a href="https://www.inegi.org.mx/programas/ccpv/2020/tableros/panorama/" target="_blank">inegi.org.mx</a> (Consultado en marzo de 2026).</div>
+    <div class="ref-item">Secretaría de Economía. (2024). <em>Teletrabajo y transformación digital en México</em> [Nota informativa]. <a href="https://www.economia.gob.mx/datamexico/" target="_blank">economia.gob.mx/datamexico</a> (Consultado en marzo de 2026).</div>
+  </div>
+
+  <div class="ref-section">
+    <div class="ref-cat">Normatividad Urbana y Arquitectónica</div>
+    <div class="ref-item">Congreso CDMX. (2024). <em>Reglamento de Construcciones para el Distrito Federal</em> [PDF]. <a href="https://www.transparencia.cdmx.gob.mx/storage/app/uploads/public/678/581/f64/678581f644e28236852601.pdf" target="_blank">transparencia.cdmx.gob.mx</a></div>
+    <div class="ref-item">SEDESOL. (s.f.). <em>Sistema Normativo de Equipamiento Urbano: Cédulas tipo educativo y cultural</em> [Documento técnico]. Secretaría de Desarrollo Social. (Consultado en marzo de 2026).</div>
+    <div class="ref-item">Congreso de los Estados Unidos Mexicanos. (2016). <em>Ley General de Asentamientos Humanos, Ordenamiento Territorial y Desarrollo Urbano</em> [Ley federal]. DOF. (Consultado en marzo de 2026).</div>
+  </div>
+
+  <div class="ref-section">
+    <div class="ref-cat">Cartografía y Datos Geográficos</div>
+    <div class="ref-item">INEGI. (2020). <em>Compendio de Información Geográfica Municipal de los Estados Unidos Mexicanos</em> [Base cartográfica]. inegi.org.mx (Consultado en marzo de 2026).</div>
+    <div class="ref-item">SEMARNAT. (s.f.). <em>Cartografía de uso de suelo y vegetación de México</em> [Capas geoespaciales]. (Consultado en marzo de 2026).</div>
+    <div class="ref-item">SGM. (s.f.). <em>Cartas geológicas 1:50,000 y 1:250,000 para municipios de la región centro del país</em> [Mapas geológicos]. Servicio Geológico Mexicano. (Consultado en marzo de 2026).</div>
+  </div>
+</section>
+
+<!-- STITCH PROMPT -->
+<section class="dark fade-in">
+  <div class="sec-label">09 · Flujo de Versiones</div>
+  <h2>Prompt para Stitch — Sitio Web Interactivo</h2>
+  <p class="sec-desc">Usa este prompt en Google Stitch para generar el sitio web final donde tu asesor pueda ver y comentar versiones actualizadas.</p>
+  <div class="stitch-box">
+    <div class="stitch-label">// PROMPT PARA GOOGLE STITCH — COPIAR Y PEGAR</div>
+    <pre>
+Crea un sitio web interactivo de una página para una tesis de
+Ingeniería Arquitectónica. Es el portafolio de investigación
+urbana de "Hernández Gómez Guillermo Jhoel".
+
+CONTENIDO: Análisis urbano comparativo de 4 municipios del
+corredor MEX-57D norte de CDMX para justificar un Centro de
+Teletrabajo y Aprendizaje Digital.
+
+Municipios: Tepotzotlán (EdoMéx), Tizayuca (Hidalgo),
+Cuautitlán (EdoMéx), Ixmiquilpan (Hidalgo).
+
+DISEÑO:
+- Estética: Industrial Organic — fondo oscuro #1A1A1A,
+  tipografía sans-serif bold, acentos en ocre #C8A96E
+- Cada municipio tiene su color fijo:
+  Tepotzotlán=#C8A96E | Tizayuca=#4A7C59 |
+  Cuautitlán=#D4441C | Ixmiquilpan=#6B8FA3
+- Nav sticky con links a secciones
+- Gráficas interactivas con Chart.js o D3
+- Cards con hover effects
+- Diseño responsive
+
+SECCIONES:
+1. Hero — título, subtítulo, chips de municipios
+2. Población — barras comparativas de densidad
+3. Conectividad — gráfica horizontal ordenada por internet%
+4. Servicios — tabla con indicadores de agua/drenaje/electricidad
+5. Pobreza — barras de pobreza + GINI + rezago educativo
+6. Suelo — tarjetas por municipio con tipo de suelo y déficit
+7. Tabla maestra — todos los indicadores
+8. Potencial de Proyecto — párrafo por municipio
+9. Referencias APA 7
+
+SISTEMA DE VERSIONES:
+- Badge "v[número]" visible en el nav
+- Sección de "Comentarios del asesor" al final
+  donde se listen las observaciones por versión
+- Botón "Actualizar versión" que muestre un modal
+  con los cambios de la versión actual
+
+DATOS CLAVE A MOSTRAR:
+[Pega aquí la tabla comparativa completa del documento]
+
+Genera el sitio completo en un solo archivo HTML con CSS
+y JS embebidos. Sin dependencias externas excepto Chart.js
+desde CDN.
+    </pre>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">Análisis Urbano Comparativo · v1.0</div>
+  <div class="footer-info">Hernández Gómez Guillermo Jhoel · Taller Terminal I · Ingeniería Arquitectónica · Marzo 2026</div>
+  <div class="footer-info">Fuentes: INEGI 2020 · CONEVAL 2020 · SEDUI EdoMéx · SIGEH Hidalgo</div>
+</footer>
+
+<script>
+// Fade in on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Nav active link
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 200) current = s.id; });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.style.color = a.getAttribute('href') === '#'+current ? 'var(--ocre)' : '#aaa';
+  });
+});
+</script>
+</body>
+</html>

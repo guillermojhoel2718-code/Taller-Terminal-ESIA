@@ -1,0 +1,9 @@
+# Justificación Académica y Social
+
+La transformación de las dinámicas de empleo y educación a nivel global ha redefinido la utilización del espacio, exigiendo a la arquitectura aportar soluciones tangibles para reducir la desigualdad. La presente investigación para la concepción de un "Centro de Teletrabajo y Aprendizaje Digital" se justifica como una respuesta proactiva frente a la centralización de los equipamientos en las metrópolis.
+
+**Relevancia Social:** Atiende a un segmento históricamente marginado de la infraestructura tecnológica: niños, jóvenes y trabajadores de la periferia norte (Estado de México e Hidalgo). En municipios como Ixmiquilpan, donde factores como el rezago educativo (22%) y la pobreza predominan, proveer una instalación pública con acceso a internet universal y a recursos de la información constituye una plataforma esencial de movilidad social y empoderamiento. Además, reduce el déficit de equipamiento cultural y educativo reportado en todos los municipios de estudio.
+
+**Relevancia Académica (Arquitectónica):** El proyecto explora innovaciones tipológicas que superan esquemas de equipamientos obsoletos. Desde el enfoque de la Ingeniería Arquitectónica y conjugando la estética 'Industrial Organic Sketch', se plantea un caso de estudio sobre cómo reciclar o intervenir áreas periféricas y crear hitos locales sin perder un sentido de racionalidad constructiva y sostenibilidad. Provee a la disciplina de un marco metodológico aplicable al desarrollo de equipamientos policéntricos a lo largo del país. 
+
+**Relevancia Territorial:** En respuesta a fenómenos contemporáneos de planeación urbana, la infraestructura propuesta previene la movilidad coercitiva (traslados de más de 2 horas hacia Azcapotzalco o el núcleo de la CDMX), al impulsar el trabajo y el aprendizaje remoto desde núcleos urbanos independientes a lo largo de los corredores MEX-57D y MEX-85D.

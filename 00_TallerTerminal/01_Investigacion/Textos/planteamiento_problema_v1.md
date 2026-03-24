@@ -1,0 +1,7 @@
+# Planteamiento del Problema
+
+El acelerado crecimiento expansivo de la Zona Metropolitana del Valle de México (ZMVM) hacia la región norte y el estado de Hidalgo ha generado dinámicas de urbanización fragmentada. Municipios integrados a corredores carreteros estratégicos (como la MEX-57D y MEX-85D) experimentan una transición estructural con profundos contrastes. Por un lado, Cuautitlán y Tepotzotlán concentran usos habitacionales masivos e industriales; por el otro, Tizayuca e Ixmiquilpan enfrentan rezagos socioeconómicos severos (con índices de pobreza que ascienden al 35.89% y 50.24% respectivamente).
+
+A nivel territorial, existe una profunda brecha de conectividad digital y de infraestructura para el soporte del trabajo a distancia y la educación virtual. Los datos censales (INEGI, 2020) indican que en Ixmiquilpan solo el 33.07% de las viviendas disponen de internet, y en Tepotzotlán un 48%, contrastando con las necesidades de una población de niños y estudiantes que exigen equipamientos adecuados para el aprendizaje híbrido y para evitar la costosa movilidad hacia el núcleo de la ZMVM.
+
+Ante este panorama, la carencia de espacios públicos equipados, seguros y con acceso tecnológico representa un obstáculo para el desarrollo local, dificultando la integración económica y perpetuando la marginación educativa. La interrogante principal radica en cómo abordar el déficit arquitectónico de infraestructura digital y educativa en municipios periféricos, consolidando espacios que articulen el teletrabajo y el aprendizaje para poblaciones vulnerables.
